@@ -22,6 +22,8 @@ namespace config {
         bool logtoconsole;
         float shippreviewscrollingspeed;
         bool shippreviewscrollinginverse;
+        float shippreviewscrollingmindistance;
+        float shippreviewscrollingmaxdistance;
         bool alwaysregeneraterestartfile;
         int failedtoinitsavesdirids;
         std::vector<std::string> fontfiles{};
