@@ -7,15 +7,25 @@ using namespace shippreviewscroll;
 
 #define MIN_SCROLLING_SPEED 0.0f
 #define MAX_SCROLLING_SPEED 50.0f
+#define MIN_SCROLLING_SPEED_DISTANCE_FACTOR 0.0f
 
 float scrollingSpeed;
+float scrollMinDistance;
+float scrollMaxDistance;
+float scrollingSpeedDistanceFactor;
 
 bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, ScrollDirection dir)
 {
+    const float factoredScroll = abs(window->zoomLevel) * scrollingSpeed * scrollingSpeedDistanceFactor + scrollingSpeed;
+
     if (dir == ScrollDirection::up)
-        window->zoomLevel += scrollingSpeed;
+        window->zoomLevel += factoredScroll;
     else if (dir == ScrollDirection::down)
-        window->zoomLevel -= scrollingSpeed;
+        window->zoomLevel -= factoredScroll;
+
+    // Zoom levels are always negative if you "zoom away" from the ship.
+    // If you want to zoom "through" the ship, it becomes positive.
+    window->zoomLevel = max(-scrollMaxDistance, min(-scrollMinDistance, window->zoomLevel));
 
     // The scroll function should just return false
     return false;
@@ -32,6 +42,10 @@ void shippreviewscroll::init()
 
     if (config::get_config().shippreviewscrollinginverse)
         scrollingSpeed *= -1;
+
+    scrollMinDistance = config::get_config().shippreviewscrollingmindistance;
+    scrollMaxDistance = config::get_config().shippreviewscrollingmaxdistance;
+    scrollingSpeedDistanceFactor = max(MIN_SCROLLING_SPEED_DISTANCE_FACTOR, config::get_config().shippreviewscrollingspeeddistancefactor);
 
     // Every window in Freelancer has a virtual "scroll" function
     // In the case of the ship preview window, this function does basically nothing

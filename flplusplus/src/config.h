@@ -20,7 +20,10 @@ namespace config {
         bool removestartlocationwarning;
         bool logtoconsole;
         float shippreviewscrollingspeed;
+        float shippreviewscrollingspeeddistancefactor;
         bool shippreviewscrollinginverse;
+        float shippreviewscrollingmindistance;
+        float shippreviewscrollingmaxdistance;
         std::vector<std::string> fontfiles{};
     };
     ConfigData& get_config();
