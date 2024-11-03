@@ -13,6 +13,7 @@ namespace config {
         float lodscale;
         float pbubblescale;
         float characterdetailscale;
+        float asteroiddistscale;
         std::string savefoldername;
         bool saveindirectory;
         std::string screenshotsfoldername;

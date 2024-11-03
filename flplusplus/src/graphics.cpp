@@ -11,6 +11,7 @@ config::ConfigData& cfg = config::get_config();
 
 #define MIN_DETAIL_SCALE 1.0f
 #define MAX_DETAIL_SCALE 1000000.0f
+#define MAX_ASTEROID_DIST_SCALE 10.0f
 
 float __fastcall multiply_lodranges_float(INI_Reader* reader, PVOID _edx, UINT index)
 {
@@ -25,6 +26,11 @@ float __fastcall multiply_pbubble_float(INI_Reader* reader, PVOID _edx, UINT ind
 float __fastcall multiply_characterdetail_float(INI_Reader* reader, PVOID _edx, UINT index)
 {
     return reader->get_value_float(index) * cfg.characterdetailscale;
+}
+
+float __fastcall multiply_asteroiddist_float(INI_Reader* reader, PVOID _edx, UINT index)
+{
+    return reader->get_value_float(index) * cfg.asteroiddistscale;
 }
 
 bool patch_lodranges()
@@ -79,6 +85,18 @@ bool patch_characterdetail()
     return true;
 }
 
+bool patch_asteroiddist()
+{
+    if (cfg.asteroiddistscale <= MIN_DETAIL_SCALE || cfg.asteroiddistscale > MAX_ASTEROID_DIST_SCALE)
+        return false;
+
+    static UINT multiplyAsteroidDistPtr = (UINT) &multiply_asteroiddist_float;
+    patch::patch_uint32(OF_ASTEROID_DIST_GET_VALUE, (UINT) &multiplyAsteroidDistPtr);
+    patch::patch_uint32(OF_AST_BILLBOARD_DIST_GET_VALUE, (UINT)&multiplyAsteroidDistPtr);
+
+    return true;
+}
+
 void graphics::init(bool version11)
 {
     patch::patch_uint8(OF_VIDEODIALOG, 0x33); //disable unsupported video dialog
@@ -94,4 +112,5 @@ void graphics::init(bool version11)
     patch_lodranges();
     patch_pbubble();
     patch_characterdetail();
+    patch_asteroiddist();
 }

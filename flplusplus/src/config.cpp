@@ -46,6 +46,9 @@ void config::init_from_file(const char *filename)
             if (reader.is_value("character_detail_scale"))
                 conf.characterdetailscale = reader.get_value_float(0);
 
+            if (reader.is_value("asteroid_dist_scale"))
+                conf.asteroiddistscale = reader.get_value_float(0);
+
             if (reader.is_value("save_folder_name"))
                 conf.savefoldername = std::string(reader.get_value_string(0));
 
