@@ -33,4 +33,10 @@ void patch_bytes(unsigned int address, void* pData, unsigned int pSize)
     VirtualProtect((void*)address, pSize, dwOldProtection, &dwOldProtection);
 }
 
+void set_execute_read_write(unsigned int address, unsigned int size)
+{
+	DWORD dummy;
+	VirtualProtect((void*)address, size, PAGE_EXECUTE_READWRITE, &dummy);
+}
+
 }

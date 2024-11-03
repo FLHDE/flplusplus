@@ -5,6 +5,8 @@ namespace patch {
 void detour(unsigned char* pOFunc, void* pHkFunc, unsigned char* originalData);
 void undetour(unsigned char* pOFunc, unsigned char* originalData);
 void patch_bytes(unsigned int address, void* pData, unsigned int pSize);
+void set_execute_read_write(unsigned int address, unsigned int size);
+
 inline void patch_uint32(unsigned int address, unsigned int data)
 {
     patch_bytes(address, (void*)&data, 4);

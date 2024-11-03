@@ -29,17 +29,12 @@ float __fastcall multiply_characterdetail_float(INI_Reader* reader, PVOID _edx, 
 
 bool patch_lodranges()
 {
-    if(cfg.lodscale < MIN_DETAIL_SCALE || cfg.lodscale > MAX_DETAIL_SCALE)
+    if(cfg.lodscale <= MIN_DETAIL_SCALE || cfg.lodscale > MAX_DETAIL_SCALE)
         return false;
 
-    if(cfg.lodscale == 1) {
-        //original draw distances
-        patch::patch_float(OF_REN_DIST0, 10000.0);
-        return true;
-    }
-
     //distances
-    patch::patch_float(OF_REN_DIST0, 10000.0f * cfg.lodscale);
+    patch::set_execute_read_write(OF_REN_DIST0, sizeof(float));
+    *((float*)OF_REN_DIST0) *= cfg.lodscale;
 
     static UINT multiplyLodsPtr = (UINT) &multiply_lodranges_float;
     patch::patch_uint32(OF_LODS_GET_VALUE, (UINT) &multiplyLodsPtr);
@@ -49,7 +44,7 @@ bool patch_lodranges()
 
 bool patch_pbubble()
 {
-    if (cfg.pbubblescale < MIN_DETAIL_SCALE || cfg.pbubblescale > MAX_DETAIL_SCALE)
+    if (cfg.pbubblescale <= MIN_DETAIL_SCALE || cfg.pbubblescale > MAX_DETAIL_SCALE)
         return false;
 
     static UINT multiplyPbubblePtr = (UINT) &multiply_pbubble_float;
@@ -57,7 +52,8 @@ bool patch_pbubble()
     patch::patch_uint32(OF_PBUBBLE_GET_VALUE0, (UINT) &multiplyPbubblePtr);
     patch::patch_uint32(OF_PBUBBLE_GET_VALUE1, (UINT) &multiplyPbubblePtr);
 
-    float ren_dist1 = 20000.0f * cfg.pbubblescale;
+    patch::set_execute_read_write(OF_REN_DIST1, sizeof(float));
+    float ren_dist1 = *((float*)OF_REN_DIST1) * cfg.pbubblescale;
 
     // 40000.0f is considered to be the maximum "safe" value
     if (ren_dist1 > 40000.0f)
@@ -70,7 +66,7 @@ bool patch_pbubble()
 
 bool patch_characterdetail()
 {
-    if (cfg.characterdetailscale < MIN_DETAIL_SCALE || cfg.characterdetailscale > MAX_DETAIL_SCALE)
+    if (cfg.characterdetailscale <= MIN_DETAIL_SCALE || cfg.characterdetailscale > MAX_DETAIL_SCALE)
         return false;
 
     auto common = (DWORD) GetModuleHandleA("common.dll");
