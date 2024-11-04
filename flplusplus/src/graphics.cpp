@@ -35,8 +35,10 @@ float __fastcall multiply_asteroiddist_float(INI_Reader* reader, PVOID _edx, UIN
 
 bool patch_lodranges()
 {
-    if(cfg.lodscale <= MIN_DETAIL_SCALE || cfg.lodscale > MAX_DETAIL_SCALE)
+    if(cfg.lodscale <= MIN_DETAIL_SCALE)
         return false;
+    else if (cfg.lodscale > MAX_DETAIL_SCALE)
+        cfg.lodscale = MAX_DETAIL_SCALE;
 
     //distances
     patch::set_execute_read_write(OF_REN_DIST0, sizeof(float));
@@ -50,8 +52,10 @@ bool patch_lodranges()
 
 bool patch_pbubble()
 {
-    if (cfg.pbubblescale <= MIN_DETAIL_SCALE || cfg.pbubblescale > MAX_DETAIL_SCALE)
+    if (cfg.pbubblescale <= MIN_DETAIL_SCALE)
         return false;
+    else if (cfg.pbubblescale > MAX_DETAIL_SCALE)
+        cfg.pbubblescale = MAX_DETAIL_SCALE;
 
     static UINT multiplyPbubblePtr = (UINT) &multiply_pbubble_float;
 
@@ -72,8 +76,10 @@ bool patch_pbubble()
 
 bool patch_characterdetail()
 {
-    if (cfg.characterdetailscale <= MIN_DETAIL_SCALE || cfg.characterdetailscale > MAX_DETAIL_SCALE)
+    if (cfg.characterdetailscale <= MIN_DETAIL_SCALE)
         return false;
+    else if (cfg.characterdetailscale > MAX_DETAIL_SCALE)
+        cfg.characterdetailscale = MAX_DETAIL_SCALE;
 
     auto common = (DWORD) GetModuleHandleA("common.dll");
 
@@ -87,8 +93,10 @@ bool patch_characterdetail()
 
 bool patch_asteroiddist()
 {
-    if (cfg.asteroiddistscale <= MIN_DETAIL_SCALE || cfg.asteroiddistscale > MAX_ASTEROID_DIST_SCALE)
+    if (cfg.asteroiddistscale <= MIN_DETAIL_SCALE)
         return false;
+    else if (cfg.asteroiddistscale > MAX_ASTEROID_DIST_SCALE)
+        cfg.asteroiddistscale = MAX_ASTEROID_DIST_SCALE;
 
     static UINT multiplyAsteroidDistPtr = (UINT) &multiply_asteroiddist_float;
     patch::patch_uint32(OF_ASTEROID_DIST_GET_VALUE, (UINT) &multiplyAsteroidDistPtr);
