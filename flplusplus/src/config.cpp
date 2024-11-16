@@ -22,6 +22,7 @@ void config::init_defaults()
     conf.logtoconsole = false;
     conf.shippreviewscrollingspeed = 2;
     conf.shippreviewscrollinginverse = false;
+    conf.alwaysregeneraterestartfile = true;
 }
 void config::init_from_file(const char *filename)
 {
@@ -72,6 +73,9 @@ void config::init_from_file(const char *filename)
 
             if (reader.is_value("ship_preview_scrolling_inverse"))
                 conf.shippreviewscrollinginverse = reader.get_value_bool(0);
+
+            if (reader.is_value("always_regenerate_restart_file"))
+                conf.alwaysregeneraterestartfile = reader.get_value_bool(0);
         }
     }
 

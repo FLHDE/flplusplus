@@ -97,6 +97,9 @@ bool __fastcall LoadSaveGame_Hook(PVOID thisptr, PVOID _edx, LPCSTR path, LPCSTR
 // This code makes it so that Restart.fl is recreated on every restart.
 void savegame::regen_restart_on_every_launch()
 {
+    if (!config::get_config().alwaysregeneraterestartfile)
+        return;
+
     auto server = (DWORD) GetModuleHandleA("server.dll");
 
     // e.g. console.dll enforces the server library to load without causing any issues, so should be fine

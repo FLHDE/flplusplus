@@ -22,6 +22,7 @@ namespace config {
         bool logtoconsole;
         float shippreviewscrollingspeed;
         bool shippreviewscrollinginverse;
+        bool alwaysregeneraterestartfile;
         std::vector<std::string> fontfiles{};
     };
     ConfigData& get_config();
