@@ -2,6 +2,7 @@
 #include "config.h"
 #include "patch.h"
 #include "log.h"
+#include "offsets.h"
 
 #define WIN32_LEAN_AND_MEAN
 #define _CRT_SECURE_NO_WARNINGS
@@ -81,12 +82,42 @@ bool UserDataPath(char * const outputBuffer)
     return true;
 }
 
+DWORD loadSaveGameFuncAddr = 0x0;
+
+bool __fastcall LoadSaveGame_Hook(PVOID thisptr, PVOID _edx, LPCSTR path, LPCSTR fileName)
+{
+    if (_stricmp(fileName, "Restart.fl") == 0)
+        return false;
+
+    typedef bool __fastcall LoadSaveGame(PVOID, PVOID, LPCSTR, LPCSTR);
+    return ((LoadSaveGame*) loadSaveGameFuncAddr)(thisptr, _edx, path, fileName);
+}
+
+// Prevents crashes when FL loads a malformed (e.g. from another mod) Restart.fl file.
+// This code makes it so that Restart.fl is recreated on every restart.
+void savegame::regen_restart_on_every_launch()
+{
+    auto server = (DWORD) GetModuleHandleA("server.dll");
+
+    // e.g. console.dll enforces the server library to load without causing any issues, so should be fine
+    if (!server)
+        server = (DWORD) LoadLibraryA("server.dll");
+
+    UINT loadSaveGameHookPtr = (UINT) &LoadSaveGame_Hook;
+    UINT loadSaveGameCallAddr = server + F_OF_LOAD_SAVE_GAME_CALL;
+    loadSaveGameFuncAddr = server + F_OF_LOAD_SAVE_GAME;
+
+    patch::patch_uint32(loadSaveGameCallAddr, loadSaveGameHookPtr - loadSaveGameCallAddr - 4);
+}
+
 void savegame::init()
 {
     HMODULE common = GetModuleHandleA("common.dll");
     auto *origFunc = (unsigned char*)GetProcAddress(common, "?GetUserDataPath@@YA_NQAD@Z");
     unsigned char buffer[5];
     patch::detour(origFunc, (void*)UserDataPath, buffer);
+
+    savegame::regen_restart_on_every_launch();
 }
 
 void savegame::get_save_folder(char *buffer)
