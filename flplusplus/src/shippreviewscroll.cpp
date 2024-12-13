@@ -10,12 +10,9 @@ using namespace shippreviewscroll;
 
 float scrollingSpeed;
 
-bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, ScrollDirection dir)
+bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, int scrollValue)
 {
-    if (dir == ScrollDirection::up)
-        window->zoomLevel += scrollingSpeed;
-    else if (dir == ScrollDirection::down)
-        window->zoomLevel -= scrollingSpeed;
+    window->zoomLevel += scrollingSpeed * static_cast<float>(scrollValue);
 
     // The scroll function should just return false
     return false;

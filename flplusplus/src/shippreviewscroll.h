@@ -5,12 +5,6 @@
 
 namespace shippreviewscroll
 {
-    enum ScrollDirection : int
-    {
-        up = 1,
-        down = -1
-    };
-
     struct ShipPreviewWindow
     {
         BYTE x00[0x3EC];
