@@ -14,3 +14,9 @@ inline UINT GetFlString(UINT ids, PWCHAR buffer, UINT bufferSize)
     typedef UINT GetFlStringFunc(PDWORD, UINT, PWCHAR, UINT);
     return ((GetFlStringFunc*) OF_GET_FL_STRING)(resourceHandle, ids, buffer, bufferSize);
 }
+
+inline UINT GetShipId()
+{
+    typedef UINT GetShipIdFunc();
+    return ((GetShipIdFunc*) OF_GET_SHIP_ID)();
+}

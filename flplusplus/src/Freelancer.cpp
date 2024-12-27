@@ -47,11 +47,7 @@ std::wstring GetBaseName()
 
 std::wstring GetShipName()
 {
-    //CShip* ship = GetShip();
-    //if (!ship)
-        //return {};
-
-    UINT currentShipId = *((PUINT) OF_CURRENT_SHIP_ID);
+    UINT currentShipId = GetShipId();
 
     if (!currentShipId)
         return {};
