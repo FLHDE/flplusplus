@@ -32,7 +32,7 @@ void RedirectIOToConsole()
 
     fp = _fdopen( hConHandle, "w" );
 
-    *stdout = *fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout);
 
     setvbuf( stdout, NULL, _IONBF, 0 );
 
@@ -42,7 +42,7 @@ void RedirectIOToConsole()
     hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
 
     fp = _fdopen( hConHandle, "r" );
-    *stdin = *fp;
+    freopen_s(&fp, "CONIN$", "w", stdin);
     setvbuf( stdin, NULL, _IONBF, 0 );
 
 // redirect unbuffered STDERR to the console
@@ -51,7 +51,7 @@ void RedirectIOToConsole()
 
     fp = _fdopen( hConHandle, "w" );
 
-    *stderr = *fp;
+    freopen_s(&fp, "CONOUT$", "w", stderr);
 
     setvbuf( stderr, NULL, _IONBF, 0 );
 
