@@ -23,6 +23,7 @@ namespace config {
         float shippreviewscrollingspeed;
         bool shippreviewscrollinginverse;
         bool alwaysregeneraterestartfile;
+        int failedtoinitsavesdirids;
         std::vector<std::string> fontfiles{};
     };
     ConfigData& get_config();

@@ -3,17 +3,18 @@
 #include "startup.h"
 #include "patch.h"
 #include "offsets.h"
+#include "config.h"
 
 bool startup::check_save_games_hook()
 {
-    UINT originalIds = *((PUINT) OF_SAVE_GAME_FAILED_ERROR_IDS); // Save the original value
-    *((PUINT) OF_SAVE_GAME_FAILED_ERROR_IDS) = 1849; // Overwrite the original value
+    int originalIds = *((int*) OF_SAVE_GAME_FAILED_ERROR_IDS); // Save the original value
+    *((int*) OF_SAVE_GAME_FAILED_ERROR_IDS) = config::get_config().failedtoinitsavesdirids; // Overwrite the original value
 
     // Call the original function
     typedef bool (check_save_games)();
     bool result = ((check_save_games*) OF_CHECK_SAVE_GAMES)();
 
-    *((PUINT) OF_SAVE_GAME_FAILED_ERROR_IDS) = originalIds; // Restore the original value
+    *((int*) OF_SAVE_GAME_FAILED_ERROR_IDS) = originalIds; // Restore the original value
 
     return result;
 }
