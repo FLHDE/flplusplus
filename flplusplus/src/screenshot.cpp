@@ -16,6 +16,7 @@
 #include <wchar.h>
 #include <io.h>
 #include <direct.h>
+#include "Freelancer.h"
 
 using namespace Gdiplus;
 
@@ -178,7 +179,13 @@ static DWORD OnScreenshot()
 
 	std::wcsftime(buffer, 80, L"%Y-%m-%d_%H-%M-%S", timeinfo);
 
-    std::wstring outfile = std::wstring(directory) + L"/" + std::wstring(buffer);
+    std::wstring outfile = std::wstring(directory) + L'/' + std::wstring(buffer);
+    std::wstring shipName = GetShipName();
+
+    // TODO: filter strings
+    if (!shipName.empty())
+        outfile += L'_' + shipName;
+
     std::wstring suffix = std::wstring(L"");
     int i = 0;
     while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str())) {

@@ -17,6 +17,7 @@ add_library (flplusplus SHARED
     "src/thnplayer.cpp"
     "src/consolewindow.cpp"
     "src/Common.cpp"
+    "src/Freelancer.cpp"
     "src/shippreviewscroll.cpp"
     "src/startup.cpp"
 )

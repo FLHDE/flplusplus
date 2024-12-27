@@ -3,6 +3,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include "offsets.h"
 
 class INI_Reader
 {
@@ -25,4 +26,23 @@ private:
     BYTE data[0x1568];
 };
 
+namespace Archetype
+{
+    struct Ship
+    {
+        BYTE x00[0x14];
+        UINT idsName;
+    };
+}
 
+struct CShip
+{
+    BYTE x00[0x88];
+    Archetype::Ship* shiparch;
+};
+
+struct IObjInspectImpl
+{
+    BYTE data[0x10];
+    CShip* ship;
+};
