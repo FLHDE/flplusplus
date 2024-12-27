@@ -129,11 +129,15 @@ void GetWindowSize(HWND flHWND, int& width, int& height)
 
 static DWORD OnScreenshot()
 {
-    char directory[MAX_PATH];
-    if(!ScreenShotPath(directory))
+    char directoryA[MAX_PATH];
+
+    if(!ScreenShotPath(directoryA))
     {
         return DWORD(-1);
     }
+
+    WCHAR directory[MAX_PATH];
+    mbstowcs(directory, directoryA, MAX_PATH);
 
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
     HWND flHWND = isFullscreen ? nullptr : *(HWND*) OF_FREELANCER_HWND;
@@ -167,22 +171,21 @@ static DWORD OnScreenshot()
 
     std::time_t rawtime;
 	std::tm* timeinfo;
-	char buffer[100];
+	WCHAR buffer[100];
 
 	std::time(&rawtime);
 	timeinfo = std::localtime(&rawtime);
 
-	std::strftime(buffer, 80, "%Y-%m-%d_%H-%M-%S", timeinfo);
-	std::puts(buffer);
+	std::wcsftime(buffer, 80, L"%Y-%m-%d_%H-%M-%S", timeinfo);
 
-    std::string outfile = std::string(directory) + "/" + std::string(buffer);
-    std::string suffix = std::string("");
+    std::wstring outfile = std::wstring(directory) + L"/" + std::wstring(buffer);
+    std::wstring suffix = std::wstring(L"");
     int i = 0;
-    while(PathFileExistsA((outfile + suffix + std::string(".png")).c_str())) {
+    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str())) {
         i++;
-        suffix = std::string("_") + std::to_string(i);
+        suffix = std::wstring(L"_") + std::to_wstring(i);
     }
-    outfile = outfile + suffix + std::string(".png");
+    outfile = outfile + suffix + std::wstring(L".png");
 
     GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR gdiplusToken;
@@ -192,7 +195,7 @@ static DWORD OnScreenshot()
 	CLSID myClsId;
 	GetEncoderClsid(L"image/png", &myClsId);
 
-	Status status = image->Save(stows(outfile).c_str(), &myClsId, nullptr);
+	Status status = image->Save(outfile.c_str(), &myClsId, nullptr);
 	delete image;
 
 	GdiplusShutdown(gdiplusToken);
