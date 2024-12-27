@@ -180,9 +180,15 @@ static DWORD OnScreenshot()
 	std::wcsftime(buffer, 80, L"%Y-%m-%d_%H-%M-%S", timeinfo);
 
     std::wstring outfile = std::wstring(directory) + L'/' + std::wstring(buffer);
+    std::wstring systemName = GetSystemName();
+    std::wstring baseName = GetBaseName();
     std::wstring shipName = GetShipName();
 
     // TODO: filter strings
+    if (!systemName.empty())
+        outfile += L'_' + systemName;
+    if (!baseName.empty())
+        outfile += L'_' + baseName;
     if (!shipName.empty())
         outfile += L'_' + shipName;
 

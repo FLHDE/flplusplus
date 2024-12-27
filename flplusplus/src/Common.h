@@ -33,6 +33,8 @@ namespace Archetype
         BYTE x00[0x14];
         UINT idsName;
     };
+
+    Ship* GetShip(UINT id);
 }
 
 struct CShip
@@ -46,3 +48,21 @@ struct IObjInspectImpl
     BYTE data[0x10];
     CShip* ship;
 };
+
+namespace Universe
+{
+    struct IBase
+    {
+        BYTE data[0xC];
+        UINT idsName;
+    };
+
+    struct ISystem
+    {
+        BYTE data[0x68];
+        UINT idsName;
+    };
+
+    IBase* get_base(UINT id);
+    ISystem* get_system(UINT id);
+}

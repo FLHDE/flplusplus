@@ -3,6 +3,8 @@
 #include <string>
 #include "offsets.h"
 
+std::wstring GetSystemName();
+std::wstring GetBaseName();
 std::wstring GetShipName();
 
 inline UINT GetFlString(UINT ids, PWCHAR buffer, UINT bufferSize)
