@@ -14,6 +14,7 @@
 #include <vector>
 #include "consolewindow.h"
 #include "shippreviewscroll.h"
+#include "startup.h"
 
 static unsigned char thornLoadData[5];
 typedef void *(__cdecl *ScriptLoadPtr)(const char*);
@@ -85,6 +86,7 @@ void init_patches(bool version11)
     fontresource::init(dataPath);
     thnplayer::init();
     shippreviewscroll::init();
+    startup::init();
     logger::writeline("flplusplus: all patched");
 }
 

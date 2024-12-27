@@ -18,6 +18,7 @@ add_library (flplusplus SHARED
     "src/consolewindow.cpp"
     "src/Common.cpp"
     "src/shippreviewscroll.cpp"
+    "src/startup.cpp"
 )
 
 target_link_libraries(flplusplus shlwapi gdiplus shell32 dbghelp)
