@@ -116,6 +116,17 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 	return -1;  // Failure
 }
 
+void GetWindowSize(HWND flHWND, int& width, int& height)
+{
+    RECT gameWindow;
+    GetClientRect(flHWND, &gameWindow);
+    ClientToScreen(flHWND, (LPPOINT) &gameWindow.left);
+    ClientToScreen(flHWND, (LPPOINT) &gameWindow.right);
+
+    width = gameWindow.right - gameWindow.left;
+    height = gameWindow.bottom - gameWindow.top;
+}
+
 static DWORD OnScreenshot()
 {
     char directory[MAX_PATH];
@@ -124,7 +135,8 @@ static DWORD OnScreenshot()
         return DWORD(-1);
     }
 
-    HWND flHWND = *(HWND*) OF_FREELANCER_HWND;
+    bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
+    HWND flHWND = isFullscreen ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
     // get the device context of FL's window
 	HDC hScreenDC = GetDC(flHWND);
@@ -132,13 +144,17 @@ static DWORD OnScreenshot()
 	// and a device context to put it in
 	HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
 
-    RECT gameWindow;
-    GetClientRect(flHWND, &gameWindow);
-    ClientToScreen(flHWND, (LPPOINT) &gameWindow.left);
-    ClientToScreen(flHWND, (LPPOINT) &gameWindow.right);
+    int width, height;
 
-    int width = gameWindow.right - gameWindow.left;
-    int height = gameWindow.bottom - gameWindow.top;
+    if (isFullscreen)
+    {
+        width = GetDeviceCaps(hScreenDC, HORZRES);
+        height = GetDeviceCaps(hScreenDC, VERTRES);
+    }
+    else
+    {
+        GetWindowSize(flHWND, width, height);
+    }
 
 	// maybe worth checking these are positive values
 	HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, width, height);
