@@ -128,6 +128,21 @@ void GetWindowSize(HWND flHWND, int& width, int& height)
     height = gameWindow.bottom - gameWindow.top;
 }
 
+// Ensures that chars which are forbidden according to the Windows file system are removed
+std::wstring FilterFileName(const std::wstring &str)
+{
+    std::wstring result = str;
+    const wchar_t forbiddenChars[] = L"<>:\"/\\|?*"
+        "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"
+        "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
+    size_t forbiddenCharsLen = wcslen(forbiddenChars);
+
+    for (UINT i = 0; i < forbiddenCharsLen; ++i)
+        result.erase(std::remove(result.begin(), result.end(), forbiddenChars[i]), result.end());
+
+    return result;
+}
+
 static DWORD OnScreenshot()
 {
     char directoryA[MAX_PATH];
@@ -180,11 +195,10 @@ static DWORD OnScreenshot()
 	std::wcsftime(buffer, 80, L"%Y-%m-%d_%H-%M-%S", timeinfo);
 
     std::wstring outfile = std::wstring(directory) + L'/' + std::wstring(buffer);
-    std::wstring systemName = GetSystemName();
-    std::wstring baseName = GetBaseName();
-    std::wstring shipName = GetShipName();
+    std::wstring systemName = FilterFileName(GetSystemName());
+    std::wstring baseName = FilterFileName(GetBaseName());
+    std::wstring shipName = FilterFileName(GetShipName());
 
-    // TODO: filter strings
     if (!systemName.empty())
         outfile += L'_' + systemName;
     if (!baseName.empty())
