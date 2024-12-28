@@ -20,3 +20,8 @@ inline UINT GetShipId()
     typedef UINT GetShipIdFunc();
     return ((GetShipIdFunc*) OF_GET_SHIP_ID)();
 }
+
+inline void ResetIds()
+{
+    *((PUINT) OF_CURRENT_SYSTEM_ID) = *((PUINT) OF_CURRENT_BASE_ID) = *((PUINT) OF_CURRENT_SHIP_ID) = NULL;
+}

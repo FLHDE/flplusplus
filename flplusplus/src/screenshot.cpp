@@ -234,6 +234,13 @@ static DWORD OnScreenshot()
 	return DWORD(-1);
 }
 
+PDWORD InitMainMenuHook()
+{
+    // Reset ship id, base id, and universe id when the main menu is displayed
+    // to prevent incorrect values from being added to the screenshot names.
+    ResetIds();
+    return (PDWORD) 0x67A598; // Original return value
+}
 
 void screenshot::init()
 {
@@ -242,4 +249,5 @@ void screenshot::init()
     unsigned char buffer[5];
     patch::detour((unsigned char*)OF_PRINTSCREEN, (void*)OnScreenshot, buffer);
     patch::detour(getScreenShotPath, (void*)ScreenShotPath, buffer);
+    patch::detour((unsigned char*)OF_INIT_MAIN_MENU, (void*)InitMainMenuHook, buffer, false);
 }
