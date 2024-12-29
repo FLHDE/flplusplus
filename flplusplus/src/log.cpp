@@ -24,11 +24,12 @@ static void do_linking()
 
 void logger::writeline(const char *line)
 {
+#define ERRORCODE_NOTICE 0x100003
     do_linking();
-    (*FDUMP)(1048578, "%s", line);
+    (*FDUMP)(ERRORCODE_NOTICE, "%s", line);
 }
 
-static DWORD fdump_timestamped(DWORD unk, const char *fmt, ...)
+static DWORD fdump_timestamped(DWORD errorCode, const char *fmt, ...)
 {
     char buffer[4096];
     va_list args;
@@ -42,9 +43,20 @@ static DWORD fdump_timestamped(DWORD unk, const char *fmt, ...)
 	timeinfo = std::localtime(&rawtime);
 	std::strftime(timestamp, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
 	if(config::get_config().logtoconsole) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+        auto severity = (BYTE) (errorCode);
+
+        if (severity <= 1)
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+        else if (severity <= 2)
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+        else
+            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
 	    printf("[%s] %s\n", timestamp, buffer);
 	}
-    return fdump_original(unk, "[%s] %s", timestamp, buffer);
+    return fdump_original(errorCode, "[%s] %s", timestamp, buffer);
 }
 
 void logger::patch_fdump()
