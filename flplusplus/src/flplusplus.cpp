@@ -16,6 +16,11 @@
 #include "shippreviewscroll.h"
 #include "startup.h"
 
+// TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
+// TODO: Add options for abbreviating names in the contact lis
+// Check 00417A51 and https://stackoverflow.com/questions/66795957/c-gettextextentpoint32-doesnt-give-the-correct-size
+// fonts.ini: HudSmall <- Contact list font
+
 static unsigned char thornLoadData[5];
 typedef void *(__cdecl *ScriptLoadPtr)(const char*);
 static ScriptLoadPtr _ThornScriptLoad;
