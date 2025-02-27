@@ -17,9 +17,17 @@
 #include "startup.h"
 
 // TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
+
 // TODO: Add options for abbreviating names in the contact lis
 // Check 00417A51 and https://stackoverflow.com/questions/66795957/c-gettextextentpoint32-doesnt-give-the-correct-size
 // fonts.ini: HudSmall <- Contact list font
+
+// TODO: There's a bug in FL where if you play the game on a system that has a touchpad (laptop for instance),
+// then scrolling will not work at all. If you use that touchpad to scroll, then it appears that you scroll infinitely.
+// When this happens, toggling engine kill doesn't seem to work anymore either.
+// This patch fixes the issue entirely: freelancer.exe, 1FE8F, 1D -> 00. i.e. makes scrolling with touchpad
+// behave as you'd expect. However, this patch completely breaks scrolling when done with a mouse wheel.
+// It'd be nice if a proper solution can be implemented.
 
 static unsigned char thornLoadData[5];
 typedef void *(__cdecl *ScriptLoadPtr)(const char*);

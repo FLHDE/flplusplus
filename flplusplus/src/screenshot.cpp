@@ -155,6 +155,12 @@ static DWORD OnScreenshot()
     WCHAR directory[MAX_PATH];
     mbstowcs(directory, directoryA, MAX_PATH);
 
+    // TODO: Is this check volatile?
+    // What happens if the user turned fullscreen off via a third party app like Borderless Gaming.
+    // Will this be reflected in Freelancer's fullscreen flag?
+    // TODO: Also if fullscreen is true, it's possible that the user moved their window to a secondary monitor.
+    // When this happens, the code below will take a screenshot of the main monitor's display which won't show FL.
+    // It should actually capture the application on the other monitor.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
     HWND flHWND = isFullscreen ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
