@@ -85,14 +85,14 @@ void init_config()
     }
 }
 
-void init_patches(bool version11)
+void init_patches()
 {
     logger::patch_fdump();
     init_config();
     if(config::get_config().logtoconsole)
         RedirectIOToConsole();
     logger::writeline("flplusplus: installing patches");
-    graphics::init(version11);
+    graphics::init();
     screenshot::init();
     savegame::init();
     startlocation::init();
@@ -125,19 +125,52 @@ void install_latehook(void)
 	//patch::detour((unsigned char*)_ThornScriptLoad, (void*)script_load_hook, thornLoadData);
 }
 
-bool check_version11(void)
+bool is_module_version11(LPCSTR moduleName, DWORD version10)
 {
-    auto common = (DWORD) GetModuleHandleA("common.dll");
+    typedef DWORD (DACOM_GetDllVersion)(LPCSTR dllName, PDWORD pMajor, PDWORD pMinor, PDWORD pBuild);
 
-    BYTE* vibrocentricFontOffset = (BYTE*) (common + F_OF_VIBROCENTRICFONT_V11);
-    return (*vibrocentricFontOffset) == 0x56;
+    bool result = false;
+    static HMODULE dacom = GetModuleHandleA("dacom.dll");
+    static auto getDllVersionFunc = (DACOM_GetDllVersion*) GetProcAddress(dacom, "DACOM_GetDllVersion");
+
+    if (getDllVersionFunc)
+    {
+        // Hack the DACOM_GetVersion such that it returns the value we're after as the "major" (lol).
+        // Basically instead of returning the high word of dwProductVersionMS, return the high word of dwProductVersionLS.
+        // This is the only value that can be used to distinguish 1.0 DLLs from 1.1 DLLs.
+        patch::patch_uint8((DWORD) dacom + F_OF_DACOM_VERSION_MS_OFFSET, 0x34);
+
+        DWORD major, minor, build;
+        if (getDllVersionFunc(moduleName, &major, &minor, &build) == 0)
+        {
+            // If the version is anything higher than the 1.0 version, then it's almost certainly 1.1.
+            result = major > version10;
+        }
+
+        // Restore the original value.
+        patch::patch_uint8((DWORD) dacom + F_OF_DACOM_VERSION_MS_OFFSET, 0x30);
+    }
+
+    return result;
 }
 
-bool check_nocd(void)
+bool check_version11(void)
 {
-    BYTE* videoDialogOffset = (BYTE*)OF_VIDEODIALOG;
-    return (*videoDialogOffset) == 0x84 ||
-           (*videoDialogOffset) == 0x33;
+    #define COMMON_DLL_V10_VERSION 1223
+    #define SERVER_DLL_V10_VERSION 1223
+
+    if (!is_module_version11("Common.dll", COMMON_DLL_V10_VERSION))
+    {
+        logger::writeline("flplusplus: Common.dll version is not 1.1, not installing");
+        return false;
+    }
+    else if (!is_module_version11("Server.dll", SERVER_DLL_V10_VERSION))
+    {
+        logger::writeline("flplusplus: Server.dll version is not 1.1, not installing");
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -147,11 +180,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                      )
 {
     if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
-        if (check_nocd()) {
-            init_patches(check_version11());
+        if (check_version11()) {
+            init_patches();
             install_latehook();
         } else {
-            logger::writeline("flplusplus: Couldn't detect No-CD EXE, not installing");
             return FALSE;
         }
     }

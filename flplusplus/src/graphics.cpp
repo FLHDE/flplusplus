@@ -105,7 +105,7 @@ bool patch_asteroiddist()
     return true;
 }
 
-void graphics::init(bool version11)
+void graphics::init()
 {
     patch::patch_uint8(OF_VIDEODIALOG, 0x33); //disable unsupported video dialog
     patch::patch_uint16(OF_MAXTEXSIZE, 0x2000); //texture size bug fix
@@ -114,7 +114,7 @@ void graphics::init(bool version11)
     //if you have a font named '\b' you have big problems
     const char *garbageFont = "\b\0";
     auto common = (DWORD) GetModuleHandleA("common.dll");
-    unsigned int address = common + (version11 ? F_OF_VIBROCENTRICFONT_V11 : F_OF_VIBROCENTRICFONT_V10);
+    unsigned int address = common + F_OF_VIBROCENTRICFONT_V11;
     patch::patch_bytes(address, (void*)garbageFont, 2);
 
     patch_lodranges();
