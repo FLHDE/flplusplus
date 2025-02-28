@@ -135,7 +135,7 @@ bool is_module_version11(LPCSTR moduleName, DWORD version10)
 
     if (getDllVersionFunc)
     {
-        // Hack the DACOM_GetVersion such that it returns the value we're after as the "major" (lol).
+        // Hack the DACOM_GetDllVersion such that it returns the value we're after as the "major" (lol).
         // Basically instead of returning the high word of dwProductVersionMS, return the high word of dwProductVersionLS.
         // This is the only value that can be used to distinguish 1.0 DLLs from 1.1 DLLs.
         patch::patch_uint8((DWORD) dacom + F_OF_DACOM_VERSION_MS_OFFSET, 0x34);
