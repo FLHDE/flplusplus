@@ -158,9 +158,13 @@ static DWORD OnScreenshot()
     // TODO: Is this check volatile?
     // What happens if the user turned fullscreen off via a third party app like Borderless Gaming.
     // Will this be reflected in Freelancer's fullscreen flag?
-    // TODO: Also if fullscreen is true, it's possible that the user moved their window to a secondary monitor.
-    // When this happens, the code below will take a screenshot of the main monitor's display which won't show FL.
-    // It should actually capture the application on the other monitor.
+    // TODO: Also if fullscreen is true, it's possible that the user moved their window to a secondary monitor and then enabled fullscreen.
+    // Now the FL window is in fullscreen mode on the secondary monitor.
+    // When this happens, the code below will take a screenshot of the main monitor's display which won't show anything from the FL window.
+    // It should actually capture the fullscreen FL window on the secondary monitor.
+
+    // Test if you can move fullscreen window to other monitor and still take a screenshot (windows shift left arrow).
+    // Replace nullptr with GetActiveWindow, or GetForegroundWindow, or GetDesktopWindow, GetWindowDC. Test with broken DxWrapper version from the old FLSR release.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
     HWND flHWND = isFullscreen ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
