@@ -34,10 +34,13 @@ void shippreviewscroll::init()
         scrollingSpeed = config::get_config().shippreviewscrollingspeed;
 
     if (config::get_config().shippreviewscrollinginverse)
-        scrollingSpeed *= -1;
+        scrollingSpeed = -scrollingSpeed;
 
     scrollMinDistance = config::get_config().shippreviewscrollingmindistance;
     scrollMaxDistance = config::get_config().shippreviewscrollingmaxdistance;
+
+    if (scrollMaxDistance < scrollMinDistance)
+        scrollMaxDistance = scrollMinDistance;
 
     // Every window in Freelancer has a virtual "scroll" function
     // In the case of the ship preview window, this function does basically nothing
