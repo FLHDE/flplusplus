@@ -82,11 +82,12 @@ bool UserDataPath(char * const outputBuffer)
     return true;
 }
 
-DWORD loadSaveGameFuncAddr = 0x0;
+DWORD loadSaveGameFuncAddr = 0;
+char restartFileName[64];
 
 bool __fastcall LoadSaveGame_Hook(PVOID thisptr, PVOID _edx, LPCSTR path, LPCSTR fileName)
 {
-    if (_stricmp(fileName, "Restart.fl") == 0)
+    if (_stricmp(fileName, restartFileName) == 0)
         return false;
 
     typedef bool __fastcall LoadSaveGame(PVOID, PVOID, LPCSTR, LPCSTR);
@@ -109,6 +110,14 @@ void savegame::regen_restart_on_every_launch()
     UINT loadSaveGameHookPtr = (UINT) &LoadSaveGame_Hook;
     UINT loadSaveGameCallAddr = server + F_OF_LOAD_SAVE_GAME_CALL;
     loadSaveGameFuncAddr = server + F_OF_LOAD_SAVE_GAME;
+
+    patch::set_execute_read_write(server + F_OF_RESTART_NAME_PTR, 4);
+    patch::set_execute_read_write(server + F_OF_SAVE_FILE_FMT_PTR, 4);
+
+    // Dynamically obtain the name of the restart file
+    LPCSTR restartName = *((LPCSTR*) (server + F_OF_RESTART_NAME_PTR));
+    LPCSTR saveFileFmt = *((LPCSTR*) (server + F_OF_SAVE_FILE_FMT_PTR));
+    snprintf(restartFileName, sizeof(restartFileName), saveFileFmt, restartName);
 
     patch::patch_uint32(loadSaveGameCallAddr, loadSaveGameHookPtr - loadSaveGameCallAddr - 4);
 }
