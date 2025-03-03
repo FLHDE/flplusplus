@@ -101,11 +101,8 @@ void savegame::regen_restart_on_every_launch()
     if (!config::get_config().alwaysregeneraterestartfile)
         return;
 
-    auto server = (DWORD) GetModuleHandleA("server.dll");
-
-    // e.g. console.dll enforces the server library to load without causing any issues, so should be fine
-    if (!server)
-        server = (DWORD) LoadLibraryA("server.dll");
+    // Server.dll should be loaded here
+    auto server = (DWORD) GetModuleHandleA("Server.dll");
 
     UINT loadSaveGameHookPtr = (UINT) &LoadSaveGame_Hook;
     UINT loadSaveGameCallAddr = server + F_OF_LOAD_SAVE_GAME_CALL;

@@ -164,7 +164,12 @@ bool check_version11(void)
         logger::writeline("flplusplus: Common.dll version is not 1.1, not installing");
         return false;
     }
-    else if (!is_module_version11("Server.dll", SERVER_DLL_V10_VERSION))
+
+    // E.g. console.dll enforces the server library to load without causing any issues, so should be fine
+    if (!GetModuleHandleA("Server.dll"))
+        LoadLibraryA("Server.dll");
+
+    if (!is_module_version11("Server.dll", SERVER_DLL_V10_VERSION))
     {
         logger::writeline("flplusplus: Server.dll version is not 1.1, not installing");
         return false;
