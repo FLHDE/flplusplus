@@ -5,6 +5,7 @@
 #include "offsets.h"
 #include "config.h"
 #include "log.h"
+#include "Freelancer.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -16,7 +17,7 @@
 #include <wchar.h>
 #include <io.h>
 #include <direct.h>
-#include "Freelancer.h"
+#include <algorithm>
 
 using namespace Gdiplus;
 
