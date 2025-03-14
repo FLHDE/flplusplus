@@ -21,7 +21,7 @@ std::wstring GetSystemName()
     if (!systemIds)
         return {};
 
-    WCHAR buffer[64] = { 0 };
+    WCHAR buffer[64];
     GetFlString(systemIds, buffer, sizeof(buffer));
 
     return std::wstring(buffer);
@@ -39,7 +39,7 @@ std::wstring GetBaseName()
     if (!baseIds)
         return {};
 
-    WCHAR buffer[64] = { 0 };
+    WCHAR buffer[64];
     GetFlString(baseIds, buffer, sizeof(buffer));
 
     return std::wstring(buffer);
@@ -57,7 +57,7 @@ std::wstring GetShipName()
     if (!shiparch)
         return {};
 
-    WCHAR buffer[64] = { 0 };
+    WCHAR buffer[64];
     GetFlString(shiparch->idsName, buffer, sizeof(buffer));
 
     return std::wstring(buffer);
