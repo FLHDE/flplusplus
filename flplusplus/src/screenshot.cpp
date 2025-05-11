@@ -21,6 +21,8 @@
 
 using namespace Gdiplus;
 
+bool altFullscreenScreenshots = false;
+
 void HandleScreenShotPathFail(char * const outputBuffer, char * failedScreenshotsDirectory)
 {
     logger::writeformat(
@@ -167,7 +169,7 @@ static DWORD OnScreenshot()
     // Test if you can move fullscreen window to other monitor and still take a screenshot (windows shift left arrow).
     // Replace nullptr with GetActiveWindow, or GetForegroundWindow, or GetDesktopWindow, GetWindowDC. Test with broken DxWrapper version from the old FLSR release.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
-    HWND flHWND = isFullscreen ? nullptr : *(HWND*) OF_FREELANCER_HWND;
+    HWND flHWND = (isFullscreen && !altFullscreenScreenshots) ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
     // get the device context of FL's window
 	HDC hScreenDC = GetDC(flHWND);
@@ -255,6 +257,8 @@ PDWORD InitMainMenuHook()
 
 void screenshot::init()
 {
+    altFullscreenScreenshots = config::get_config().altfullscreenscreenshots;
+
     HMODULE common = GetModuleHandleA("common.dll");
     auto* getScreenShotPath = (unsigned char*)GetProcAddress(common, "?GetScreenShotPath@@YA_NQAD@Z");
     unsigned char buffer[5];

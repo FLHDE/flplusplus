@@ -18,6 +18,7 @@ namespace config {
         bool saveindirectory;
         std::string screenshotsfoldername;
         bool screenshotsindirectory;
+        bool altfullscreenscreenshots;
         bool removestartlocationwarning;
         bool logtoconsole;
         float shippreviewscrollingspeed;

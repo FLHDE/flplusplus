@@ -9,6 +9,12 @@ config::ConfigData& config::get_config()
     return conf;
 }
 
+bool IsWine()
+{
+    HMODULE ntDllModule = LoadLibraryA("ntdll.dll'");
+    return GetProcAddress(ntDllModule, "wine_get_version") != nullptr;
+}
+
 void config::init_defaults()
 {
     conf.lodscale = 1;
@@ -18,6 +24,7 @@ void config::init_defaults()
     conf.saveindirectory = false;
     conf.screenshotsfoldername = "FreelancerShots";
     conf.screenshotsindirectory = false;
+    conf.altfullscreenscreenshots = IsWine();
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;
     conf.shippreviewscrollingspeed = 2;
@@ -64,6 +71,9 @@ void config::init_from_file(const char *filename)
 
             if (reader.is_value("screenshots_in_directory"))
                 conf.screenshotsindirectory = reader.get_value_bool(0);
+
+            if (reader.is_value("alternative_fullscreen_screenshots_code"))
+                conf.altfullscreenscreenshots = reader.get_value_bool(0);
 
             if (reader.is_value("remove_start_location_warning"))
                 conf.removestartlocationwarning = reader.get_value_bool(0);
