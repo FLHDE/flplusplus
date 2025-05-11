@@ -21,6 +21,7 @@
 
 using namespace Gdiplus;
 
+#define MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS 20
 bool altFullscreenScreenshots = false;
 
 void HandleScreenShotPathFail(char * const outputBuffer, char * failedScreenshotsDirectory)
@@ -169,7 +170,8 @@ static DWORD OnScreenshot()
     // Test if you can move fullscreen window to other monitor and still take a screenshot (windows shift left arrow).
     // Replace nullptr with GetActiveWindow, or GetForegroundWindow, or GetDesktopWindow, GetWindowDC. Test with broken DxWrapper version from the old FLSR release.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
-    HWND flHWND = (isFullscreen && !altFullscreenScreenshots) ? nullptr : *(HWND*) OF_FREELANCER_HWND;
+    bool useWindowScreenshotCode = isFullscreen && !altFullscreenScreenshots;
+    HWND flHWND = useWindowScreenshotCode ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
     // get the device context of FL's window
 	HDC hScreenDC = GetDC(flHWND);
@@ -179,7 +181,7 @@ static DWORD OnScreenshot()
 
     int width, height;
 
-    if (isFullscreen)
+    if (useWindowScreenshotCode)
     {
         width = GetDeviceCaps(hScreenDC, HORZRES);
         height = GetDeviceCaps(hScreenDC, VERTRES);
@@ -221,24 +223,28 @@ static DWORD OnScreenshot()
 
     std::wstring suffix = std::wstring(L"");
     int i = 0;
-    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str())) {
+    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str()) && i < MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS) {
         i++;
         suffix = std::wstring(L"_") + std::to_wstring(i);
     }
-    outfile = outfile + suffix + std::wstring(L".png");
 
-    GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR gdiplusToken;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-	Bitmap* image = new Bitmap(hBitmap, nullptr);
+    if (i < MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS)
+    {
+        outfile = outfile + suffix + std::wstring(L".png");
 
-	CLSID myClsId;
-	GetEncoderClsid(L"image/png", &myClsId);
+        GdiplusStartupInput gdiplusStartupInput;
+        ULONG_PTR gdiplusToken;
+        GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+        Bitmap* image = new Bitmap(hBitmap, nullptr);
 
-	Status status = image->Save(outfile.c_str(), &myClsId, nullptr);
-	delete image;
+        CLSID myClsId;
+        GetEncoderClsid(L"image/png", &myClsId);
 
-	GdiplusShutdown(gdiplusToken);
+        Status status = image->Save(outfile.c_str(), &myClsId, nullptr);
+        delete image;
+
+        GdiplusShutdown(gdiplusToken);
+    }
 
 	// clean up
 	DeleteDC(hMemoryDC);
