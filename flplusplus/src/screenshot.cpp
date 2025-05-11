@@ -170,8 +170,8 @@ static DWORD OnScreenshot()
     // Test if you can move fullscreen window to other monitor and still take a screenshot (windows shift left arrow).
     // Replace nullptr with GetActiveWindow, or GetForegroundWindow, or GetDesktopWindow, GetWindowDC. Test with broken DxWrapper version from the old FLSR release.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
-    bool useWindowScreenshotCode = isFullscreen && !altFullscreenScreenshots;
-    HWND flHWND = useWindowScreenshotCode ? nullptr : *(HWND*) OF_FREELANCER_HWND;
+    bool useFullscreenScreenshotCode = isFullscreen && !altFullscreenScreenshots;
+    HWND flHWND = useFullscreenScreenshotCode ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
     // get the device context of FL's window
 	HDC hScreenDC = GetDC(flHWND);
@@ -181,7 +181,7 @@ static DWORD OnScreenshot()
 
     int width, height;
 
-    if (useWindowScreenshotCode)
+    if (useFullscreenScreenshotCode)
     {
         width = GetDeviceCaps(hScreenDC, HORZRES);
         height = GetDeviceCaps(hScreenDC, VERTRES);
