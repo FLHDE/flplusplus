@@ -11,7 +11,7 @@ config::ConfigData& config::get_config()
 
 bool IsWine()
 {
-    HMODULE ntDllModule = LoadLibraryA("ntdll.dll'");
+    HMODULE ntDllModule = LoadLibraryA("ntdll.dll");
     return GetProcAddress(ntDllModule, "wine_get_version") != nullptr;
 }
 
