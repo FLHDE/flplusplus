@@ -19,6 +19,11 @@ void HandleUserDataPathFail(char * const outputBuffer, char * failedSavesDirecto
     *outputBuffer = '\0';
 }
 
+void WriteSaveDirSuccessMessage(const char* dir)
+{
+    logger::writeformat("flplusplus: using the following saves directory: \"%s\"", dir);
+}
+
 void GetSavesInDirectoryPath(char * path)
 {
     GetModuleFileNameA(NULL, path, MAX_PATH);
@@ -66,6 +71,7 @@ bool UserDataPath(char * const outputBuffer)
             // Fallback
             GetSavesInDirectoryPath(path);
         } else {
+            WriteSaveDirSuccessMessage(path);
             strncpy(outputBuffer, path, MAX_PATH);
             return true;
         }
@@ -78,6 +84,7 @@ bool UserDataPath(char * const outputBuffer)
         }
     }
 
+    WriteSaveDirSuccessMessage(path);
     strncpy(outputBuffer, path, MAX_PATH);
     return true;
 }
