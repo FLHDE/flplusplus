@@ -25,6 +25,7 @@ void config::init_defaults()
     conf.screenshotsfoldername = "FreelancerShots";
     conf.screenshotsindirectory = false;
     conf.altfullscreenscreenshots = IsWine();
+    conf.asteroiddistscale = 1.0f;
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;
     conf.shippreviewscrollingspeed = 2;
