@@ -22,6 +22,8 @@ add_library (flplusplus SHARED
     "src/startup.cpp"
 )
 
+target_sources(flplusplus PRIVATE "rc/flplusplus.rc")
+
 target_link_libraries(flplusplus shlwapi gdiplus shell32 dbghelp)
 target_include_directories(flplusplus PUBLIC "include")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
