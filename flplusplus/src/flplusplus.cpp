@@ -185,6 +185,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                      )
 {
     if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
+        DisableThreadLibraryCalls(hModule);
         if (check_version11()) {
             init_patches();
             install_latehook();
