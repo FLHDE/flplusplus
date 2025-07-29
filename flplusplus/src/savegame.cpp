@@ -15,13 +15,31 @@
 
 void HandleUserDataPathFail(char * const outputBuffer, char * failedSavesDirectory)
 {
-    logger::writeformat("flplusplus: failed to access the saves directory for reading and writing (%s). Freelancer may not be able to properly load and store save files.", failedSavesDirectory);
+    static bool alreadyPrinted = false;
+    if (!alreadyPrinted) {
+        logger::writeformat("flplusplus: failed to access the saves directory for reading and writing (%s). Freelancer may not be able to properly load and store save files.", failedSavesDirectory);
+        alreadyPrinted = true;
+    }
+
     *outputBuffer = '\0';
 }
 
 void WriteSaveDirSuccessMessage(const char* dir)
 {
-    logger::writeformat("flplusplus: using the following saves directory: \"%s\"", dir);
+    static bool alreadyPrinted = false;
+    if (!alreadyPrinted) {
+        logger::writeformat("flplusplus: using the following saves directory: \"%s\"", dir);
+        alreadyPrinted = true;
+    }
+}
+
+void WriteFallbackMessage()
+{
+    static bool alreadyPrinted = false;
+    if (!alreadyPrinted) {
+        logger::writeline("flplusplus: saveindirectory option not set but trying to access the root SAVE directory regardless (fallback).");
+        alreadyPrinted = true;
+    }
 }
 
 void GetSavesInDirectoryPath(char * path)
@@ -66,9 +84,8 @@ bool UserDataPath(char * const outputBuffer)
         if (!TryGetMyGamesPath(path)) {
             HandleUserDataPathFail(outputBuffer, path);
 
-            logger::writeline("flplusplus: saveindirectory option not set but trying to access the root SAVE directory regardless (fallback).");
-
             // Fallback
+            WriteFallbackMessage();
             GetSavesInDirectoryPath(path);
         } else {
             WriteSaveDirSuccessMessage(path);
