@@ -20,12 +20,12 @@ void config::init_defaults()
     conf.lodscale = 1;
     conf.pbubblescale = 1;
     conf.characterdetailscale = 1;
+    conf.asteroiddistscale = 1.0f;
     conf.savefoldername = "Freelancer";
     conf.saveindirectory = false;
     conf.screenshotsfoldername = "FreelancerShots";
     conf.screenshotsindirectory = false;
     conf.altfullscreenscreenshots = IsWine();
-    conf.asteroiddistscale = 1.0f;
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;
     conf.shippreviewscrollingspeed = 2;
@@ -34,6 +34,7 @@ void config::init_defaults()
     conf.shippreviewscrollingmaxdistance = 100.0f;
     conf.alwaysregeneraterestartfile = true;
     conf.failedtoinitsavesdirids = 1849;
+    conf.touchpadsupport = false;
 }
 void config::init_from_file(const char *filename)
 {
@@ -99,6 +100,9 @@ void config::init_from_file(const char *filename)
 
             if (reader.is_value("failed_to_init_saves_dir_ids"))
                 conf.failedtoinitsavesdirids = reader.get_value_int(0);
+
+            if (reader.is_value("touchpad_support"))
+                conf.touchpadsupport = reader.get_value_bool(0);
         }
     }
 

@@ -20,6 +20,7 @@ add_library (flplusplus SHARED
     "src/Freelancer.cpp"
     "src/shippreviewscroll.cpp"
     "src/startup.cpp"
+    "src/touchpad.cpp"
 )
 
 target_sources(flplusplus PRIVATE "rc/flplusplus.rc")

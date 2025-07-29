@@ -27,6 +27,7 @@ namespace config {
         float shippreviewscrollingmaxdistance;
         bool alwaysregeneraterestartfile;
         int failedtoinitsavesdirids;
+        bool touchpadsupport;
         std::vector<std::string> fontfiles{};
     };
     ConfigData& get_config();
