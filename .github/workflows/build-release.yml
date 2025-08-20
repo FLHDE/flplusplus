@@ -12,7 +12,7 @@ jobs:
     - name: Compile
       run: ./build_linux.sh
     - name: Archive artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: flplusplus.dll
         path: out/flplusplus.dll
