@@ -18,7 +18,7 @@ bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, i
 
     // Zoom levels are always negative if you "zoom away" from the ship.
     // If you want to zoom "through" the ship, it becomes positive.
-    window->zoomLevel = max(-scrollMaxDistance, min(-scrollMinDistance, window->zoomLevel));
+    window->zoomLevel = std::max<float>(-scrollMaxDistance, std::min<float>(-scrollMinDistance, window->zoomLevel));
 
     // The scroll function should just return false
     return false;
