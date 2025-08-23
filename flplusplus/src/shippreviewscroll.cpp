@@ -2,6 +2,7 @@
 #include "offsets.h"
 #include "patch.h"
 #include "config.h"
+#include <algorithm>
 
 using namespace shippreviewscroll;
 
