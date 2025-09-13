@@ -26,6 +26,7 @@ void config::init_defaults()
     conf.screenshotsfoldername = "FreelancerShots";
     conf.screenshotsindirectory = false;
     conf.altfullscreenscreenshots = IsWine();
+    conf.altwindowedscreenshots = false;
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;
     conf.shippreviewscrollingspeed = 2;
@@ -76,6 +77,9 @@ void config::init_from_file(const char *filename)
 
             if (reader.is_value("alternative_fullscreen_screenshots_code"))
                 conf.altfullscreenscreenshots = reader.get_value_bool(0);
+
+            if (reader.is_value("alternative_windowed_screenshots_code"))
+                conf.altwindowedscreenshots = reader.get_value_bool(0);
 
             if (reader.is_value("remove_start_location_warning"))
                 conf.removestartlocationwarning = reader.get_value_bool(0);

@@ -21,8 +21,9 @@
 
 using namespace Gdiplus;
 
-#define MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS 20
+#define MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS 20
 bool altFullscreenScreenshots = false;
+bool altWindowedScreenshots = false;
 
 void HandleScreenShotPathFail(char * const outputBuffer, char * failedScreenshotsDirectory)
 {
@@ -170,7 +171,11 @@ static DWORD OnScreenshot()
     // Test if you can move fullscreen window to other monitor and still take a screenshot (windows shift left arrow).
     // Replace nullptr with GetActiveWindow, or GetForegroundWindow, or GetDesktopWindow, GetWindowDC. Test with broken DxWrapper version from the old FLSR release.
     bool isFullscreen = (*((PBYTE) OF_FREELANCER_FULLSCREEN_FLAG) & 1) == 1;
-    bool useFullscreenScreenshotCode = isFullscreen && !altFullscreenScreenshots;
+    bool useFullscreenScreenshotCode = isFullscreen;
+
+    if ((isFullscreen && altFullscreenScreenshots) || (!isFullscreen && altWindowedScreenshots))
+        useFullscreenScreenshotCode = !useFullscreenScreenshotCode;
+
     HWND flHWND = useFullscreenScreenshotCode ? nullptr : *(HWND*) OF_FREELANCER_HWND;
 
     // get the device context of FL's window
@@ -223,12 +228,12 @@ static DWORD OnScreenshot()
 
     std::wstring suffix = std::wstring(L"");
     int i = 0;
-    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str()) && i < MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS) {
+    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str()) && i < MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS) {
         i++;
         suffix = std::wstring(L"_") + std::to_wstring(i);
     }
 
-    if (i < MAX_SCREENSHOT_PATCH_CHECK_ATTEMPTS)
+    if (i < MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS)
     {
         outfile = outfile + suffix + std::wstring(L".png");
 
@@ -264,6 +269,7 @@ PDWORD InitMainMenuHook()
 void screenshot::init()
 {
     altFullscreenScreenshots = config::get_config().altfullscreenscreenshots;
+    altWindowedScreenshots = config::get_config().altwindowedscreenshots;
 
     HMODULE common = GetModuleHandleA("common.dll");
     auto* getScreenShotPath = (unsigned char*)GetProcAddress(common, "?GetScreenShotPath@@YA_NQAD@Z");
