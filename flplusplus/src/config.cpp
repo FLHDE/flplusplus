@@ -46,67 +46,74 @@ void config::init_from_file(const char *filename)
 
     while (reader.read_header())
     {
-        if (!reader.is_header("flplusplus"))
-            continue;
-
-        while (reader.read_value())
+        if (reader.is_header("flplusplus"))
         {
-            if (reader.is_value("lod_scale"))
-                conf.lodscale = reader.get_value_float(0);
+            while (reader.read_value())
+            {
+                if (reader.is_value("lod_scale"))
+                    conf.lodscale = reader.get_value_float(0);
 
-            if (reader.is_value("pbubble_scale"))
-                conf.pbubblescale = reader.get_value_float(0);
+                if (reader.is_value("pbubble_scale"))
+                    conf.pbubblescale = reader.get_value_float(0);
 
-            if (reader.is_value("character_detail_scale"))
-                conf.characterdetailscale = reader.get_value_float(0);
+                if (reader.is_value("character_detail_scale"))
+                    conf.characterdetailscale = reader.get_value_float(0);
 
-            if (reader.is_value("asteroid_dist_scale"))
-                conf.asteroiddistscale = reader.get_value_float(0);
+                if (reader.is_value("asteroid_dist_scale"))
+                    conf.asteroiddistscale = reader.get_value_float(0);
 
-            if (reader.is_value("save_folder_name"))
-                conf.savefoldername = std::string(reader.get_value_string(0));
+                if (reader.is_value("save_folder_name"))
+                    conf.savefoldername = std::string(reader.get_value_string(0));
 
-            if (reader.is_value("save_in_directory"))
-                conf.saveindirectory = reader.get_value_bool(0);
+                if (reader.is_value("save_in_directory"))
+                    conf.saveindirectory = reader.get_value_bool(0);
 
-            if (reader.is_value("screenshots_folder_name"))
-                conf.screenshotsfoldername = std::string(reader.get_value_string(0));
+                if (reader.is_value("screenshots_folder_name"))
+                    conf.screenshotsfoldername = std::string(reader.get_value_string(0));
 
-            if (reader.is_value("screenshots_in_directory"))
-                conf.screenshotsindirectory = reader.get_value_bool(0);
+                if (reader.is_value("screenshots_in_directory"))
+                    conf.screenshotsindirectory = reader.get_value_bool(0);
 
-            if (reader.is_value("alternative_fullscreen_screenshots_code"))
-                conf.altfullscreenscreenshots = reader.get_value_bool(0);
+                if (reader.is_value("alternative_fullscreen_screenshots_code"))
+                    conf.altfullscreenscreenshots = reader.get_value_bool(0);
 
-            if (reader.is_value("alternative_windowed_screenshots_code"))
-                conf.altwindowedscreenshots = reader.get_value_bool(0);
+                if (reader.is_value("alternative_windowed_screenshots_code"))
+                    conf.altwindowedscreenshots = reader.get_value_bool(0);
 
-            if (reader.is_value("remove_start_location_warning"))
-                conf.removestartlocationwarning = reader.get_value_bool(0);
+                if (reader.is_value("remove_start_location_warning"))
+                    conf.removestartlocationwarning = reader.get_value_bool(0);
 
-            if (reader.is_value("log_to_console"))
-                conf.logtoconsole = reader.get_value_bool(0);
+                if (reader.is_value("log_to_console"))
+                    conf.logtoconsole = reader.get_value_bool(0);
 
-            if (reader.is_value("ship_preview_scrolling_speed"))
-                conf.shippreviewscrollingspeed = reader.get_value_float(0);
+                if (reader.is_value("ship_preview_scrolling_speed"))
+                    conf.shippreviewscrollingspeed = reader.get_value_float(0);
 
-            if (reader.is_value("ship_preview_scrolling_inverse"))
-                conf.shippreviewscrollinginverse = reader.get_value_bool(0);
+                if (reader.is_value("ship_preview_scrolling_inverse"))
+                    conf.shippreviewscrollinginverse = reader.get_value_bool(0);
 
-            if (reader.is_value("ship_preview_scrolling_min_distance"))
-                conf.shippreviewscrollingmindistance = reader.get_value_float(0);
+                if (reader.is_value("ship_preview_scrolling_min_distance"))
+                    conf.shippreviewscrollingmindistance = reader.get_value_float(0);
 
-            if (reader.is_value("ship_preview_scrolling_max_distance"))
-                conf.shippreviewscrollingmaxdistance = reader.get_value_float(0);
+                if (reader.is_value("ship_preview_scrolling_max_distance"))
+                    conf.shippreviewscrollingmaxdistance = reader.get_value_float(0);
 
-            if (reader.is_value("always_regenerate_restart_file"))
-                conf.alwaysregeneraterestartfile = reader.get_value_bool(0);
+                if (reader.is_value("always_regenerate_restart_file"))
+                    conf.alwaysregeneraterestartfile = reader.get_value_bool(0);
 
-            if (reader.is_value("failed_to_init_saves_dir_ids"))
-                conf.failedtoinitsavesdirids = reader.get_value_int(0);
+                if (reader.is_value("failed_to_init_saves_dir_ids"))
+                    conf.failedtoinitsavesdirids = reader.get_value_int(0);
 
-            if (reader.is_value("touchpad_support"))
-                conf.touchpadsupport = reader.get_value_bool(0);
+                if (reader.is_value("touchpad_support"))
+                    conf.touchpadsupport = reader.get_value_bool(0);
+            }
+        }
+        else if (reader.is_header("direct_ips"))
+        {
+            while (reader.read_value())
+            {
+                conf.directips.emplace_back(reader.get_name_ptr());
+            }
         }
     }
 

@@ -16,6 +16,7 @@
 #include "shippreviewscroll.h"
 #include "startup.h"
 #include "touchpad.h"
+#include "directips.h"
 
 // TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
 
@@ -95,6 +96,8 @@ void init_patches()
     shippreviewscroll::init();
     startup::init();
     touchpad::init();
+    directips::init();
+
     logger::writeline("flplusplus: all patched");
 }
 

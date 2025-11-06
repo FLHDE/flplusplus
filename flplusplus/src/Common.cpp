@@ -17,7 +17,8 @@ const char* Common_JumpTable[] = {
     "?close@INI_Reader@@QAEXXZ", 0,
     "?get_base@Universe@@YAPAUIBase@1@I@Z", 0,
     "?get_system@Universe@@YAPBUISystem@1@I@Z", 0,
-    "?GetShip@Archetype@@YAPAUShip@1@I@Z", 0
+    "?GetShip@Archetype@@YAPAUShip@1@I@Z", 0,
+    "?get_name_ptr@INI_Reader@@QAEPBDXZ", 0
 };
 JUMPTABLE_INIT("common.dll", Common_JumpTable)
 
@@ -37,3 +38,4 @@ FUNC(void INI_Reader::close(), 11)
 FUNC(Universe::IBase* Universe::get_base(UINT id), 12)
 FUNC(Universe::ISystem* Universe::get_system(UINT id), 13)
 FUNC(Archetype::Ship* Archetype::GetShip(UINT id), 14)
+FUNC(LPCSTR INI_Reader::get_name_ptr(), 15)

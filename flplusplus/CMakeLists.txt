@@ -21,6 +21,7 @@ add_library (flplusplus SHARED
     "src/shippreviewscroll.cpp"
     "src/startup.cpp"
     "src/touchpad.cpp"
+    "src/directips.cpp"
 )
 
 target_sources(flplusplus PRIVATE "rc/flplusplus.rc")

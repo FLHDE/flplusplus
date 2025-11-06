@@ -21,6 +21,7 @@ public:
     float get_value_float(UINT index);
     LPCSTR get_value_string(UINT index);
     void close();
+    LPCSTR get_name_ptr();
 
 private:
     BYTE data[0x1568];

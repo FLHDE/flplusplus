@@ -30,6 +30,7 @@ namespace config {
         int failedtoinitsavesdirids;
         bool touchpadsupport;
         std::vector<std::string> fontfiles{};
+        std::vector<std::string> directips{};
     };
     ConfigData& get_config();
 }
