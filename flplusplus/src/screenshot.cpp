@@ -71,7 +71,7 @@ bool ScreenShotPath(char * const outputBuffer)
             // Fallback
             GetScInDirectoryPath(path);
         } else {
-            strncpy(outputBuffer, path, MAX_PATH);
+            strncpy_s(outputBuffer, MAX_PATH, path, MAX_PATH);
             return true;
         }
     }
@@ -87,7 +87,7 @@ bool ScreenShotPath(char * const outputBuffer)
     return true;
 }
 
-std::wstring stows(std::string str)
+std::wstring stows(const std::string& str)
 {
     return std::wstring(str.begin(), str.end());
 }
@@ -131,6 +131,21 @@ void GetWindowSize(HWND flHWND, int& width, int& height)
 
     width = gameWindow.right - gameWindow.left;
     height = gameWindow.bottom - gameWindow.top;
+}
+
+std::wstring GetScreenshotOutPath(LPCWSTR directory, const std::wstring &baseFileName, int suffixIndex)
+{
+    std::wstring fileName = baseFileName;
+    if (suffixIndex > 0) {
+        fileName += std::wstring(L"_") + std::to_wstring(suffixIndex);
+    }
+    fileName += std::wstring(L".png");
+
+    WCHAR cleanedFileName[MAX_PATH];
+    wcscpy_s(cleanedFileName, sizeof(cleanedFileName), fileName.c_str());
+    PathCleanupSpec(directory, cleanedFileName);
+
+    return std::wstring(directory) + L'\\' + std::wstring(cleanedFileName);
 }
 
 static DWORD OnScreenshot()
@@ -211,22 +226,16 @@ static DWORD OnScreenshot()
     if (!shipName.empty())
         fileName += L'_' + shipName;
 
-    WCHAR cleanedFileName[MAX_PATH];
-    wcscpy_s(cleanedFileName, sizeof(cleanedFileName), fileName.c_str());
-    PathCleanupSpec(directory, cleanedFileName);
-    std::wstring outfile = std::wstring(directory) + L'/' + std::wstring(cleanedFileName);
-
-    std::wstring suffix = std::wstring(L"");
     int i = 0;
-    while(PathFileExistsW((outfile + suffix + std::wstring(L".png")).c_str()) && i < MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS) {
+    std::wstring outfile = GetScreenshotOutPath(directory, fileName, i);
+
+    while (PathFileExistsW(outfile.c_str()) && i < MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS) {
         i++;
-        suffix = std::wstring(L"_") + std::to_wstring(i);
+        outfile = GetScreenshotOutPath(directory, fileName, i);
     }
 
     if (i < MAX_SCREENSHOT_PATH_CHECK_ATTEMPTS)
     {
-        outfile = outfile + suffix + std::wstring(L".png");
-
         GdiplusStartupInput gdiplusStartupInput;
         ULONG_PTR gdiplusToken;
         GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
