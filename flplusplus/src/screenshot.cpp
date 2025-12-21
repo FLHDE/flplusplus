@@ -18,6 +18,7 @@
 #include <io.h>
 #include <direct.h>
 #include <algorithm>
+#include <cstdlib>
 
 using namespace Gdiplus;
 
@@ -142,7 +143,7 @@ std::wstring GetScreenshotOutPath(LPCWSTR directory, const std::wstring &baseFil
     fileName += std::wstring(L".png");
 
     WCHAR cleanedFileName[MAX_PATH];
-    wcscpy_s(cleanedFileName, sizeof(cleanedFileName), fileName.c_str());
+    wcscpy_s(cleanedFileName, _countof(cleanedFileName), fileName.c_str());
     PathCleanupSpec(directory, cleanedFileName);
 
     return std::wstring(directory) + L'\\' + std::wstring(cleanedFileName);

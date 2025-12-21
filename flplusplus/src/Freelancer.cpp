@@ -1,5 +1,6 @@
 #include "Freelancer.h"
 #include "Common.h"
+#include <cstdlib>
 
 CShip* GetShip()
 {
@@ -22,7 +23,7 @@ std::wstring GetSystemName()
         return {};
 
     WCHAR buffer[64] = { 0 };
-    GetFlString(systemIds, buffer, sizeof(buffer));
+    GetFlString(systemIds, buffer, _countof(buffer));
 
     return std::wstring(buffer);
 }
@@ -40,7 +41,7 @@ std::wstring GetBaseName()
         return {};
 
     WCHAR buffer[64] = { 0 };
-    GetFlString(baseIds, buffer, sizeof(buffer));
+    GetFlString(baseIds, buffer, _countof(buffer));
 
     return std::wstring(buffer);
 }
@@ -58,7 +59,7 @@ std::wstring GetShipName()
         return {};
 
     WCHAR buffer[64] = { 0 };
-    GetFlString(shiparch->idsName, buffer, sizeof(buffer));
+    GetFlString(shiparch->idsName, buffer, _countof(buffer));
 
     return std::wstring(buffer);
 }
