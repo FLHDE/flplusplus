@@ -11,8 +11,12 @@ jobs:
       run: sudo apt install g++-mingw-w64-i686
     - name: Compile
       run: ./build_linux.sh
+    - name: Copy ini file to build directory
+      run: cp flplusplus.ini out
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
         name: flplusplus.dll
-        path: out/flplusplus.dll
+        path: |
+          out/flplusplus.dll
+          out/flplusplus.ini
