@@ -9,12 +9,20 @@ using namespace shippreviewscroll;
 #define MIN_SCROLLING_SPEED 0.0f
 #define MAX_SCROLLING_SPEED 50.0f
 
+#define NN_SHIPTRADER_VFTABLE_ADDR (0x5D593C)
+
 float scrollingSpeed;
 float scrollMinDistance;
 float scrollMaxDistance;
 
 bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, int scrollValue)
 {
+    // The exact same ship preview element is used in other places as well,
+    // e.g. the FL beta inventory showed a top-down model of the player ship, but plugins can re-enable it.
+    // We don't want the zooming to work anywhere else other than in the ship dealer.
+    if (window->parent->vftable != NN_SHIPTRADER_VFTABLE_ADDR)
+        return false;
+
     window->zoomLevel += scrollingSpeed * static_cast<float>(scrollValue);
 
     // Zoom levels are always negative if you "zoom away" from the ship.

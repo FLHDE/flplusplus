@@ -5,10 +5,17 @@
 
 namespace shippreviewscroll
 {
+    struct ShipPreviewParent
+    {
+        DWORD vftable;
+    };
+
     struct ShipPreviewWindow
     {
-        BYTE x00[0x3EC];
-        float zoomLevel;
+        DWORD vftable;
+        ShipPreviewParent* parent;
+        BYTE x08[0x3E4];
+        float zoomLevel; // 0x3E8
     };
 
     void init();
