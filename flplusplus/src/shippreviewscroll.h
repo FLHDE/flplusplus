@@ -15,7 +15,7 @@ namespace shippreviewscroll
         DWORD vftable;
         ShipPreviewParent* parent;
         BYTE x08[0x3E4];
-        float zoomLevel; // 0x3E8
+        float zoomLevel; // 0x3EC
     };
 
     void init();
