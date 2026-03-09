@@ -17,9 +17,9 @@ bool IsWine()
 
 void config::init_defaults()
 {
-    conf.lodscale = 1;
-    conf.pbubblescale = 1;
-    conf.characterdetailscale = 1;
+    conf.lodscale = 1.0f;
+    conf.pbubblescale = 1.0f;
+    conf.characterdetailscale = 1.0f;
     conf.asteroiddistscale = 1.0f;
     conf.savefoldername = "Freelancer";
     conf.saveindirectory = false;
@@ -29,7 +29,7 @@ void config::init_defaults()
     conf.altwindowedscreenshots = false;
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;
-    conf.shippreviewscrollingspeed = 2;
+    conf.shippreviewscrollingspeed = 3.0f;
     conf.shippreviewscrollinginverse = false;
     conf.shippreviewscrollingmindistance = 0.0f;
     conf.shippreviewscrollingmaxdistance = 100.0f;
