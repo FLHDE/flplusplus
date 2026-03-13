@@ -157,9 +157,12 @@ bool check_version11(void)
     #define COMMON_DLL_V10_VERSION 1223
     #define SERVER_DLL_V10_VERSION 1223
 
+    const char* moduleFmtStr =
+        "flplusplus: %s version may not be 1.1. flplusplus requires the official patch. Continue at your own risk.";
+
     if (!is_module_version11("Common.dll", COMMON_DLL_V10_VERSION))
     {
-        logger::writeline("flplusplus: Common.dll version is not 1.1, not installing");
+        logger::writeformat(moduleFmtStr, "Common.dll");
         return false;
     }
 
@@ -169,7 +172,7 @@ bool check_version11(void)
 
     if (!is_module_version11("Server.dll", SERVER_DLL_V10_VERSION))
     {
-        logger::writeline("flplusplus: Server.dll version is not 1.1, not installing");
+        logger::writeformat(moduleFmtStr, "Server.dll");
         return false;
     }
 
@@ -184,12 +187,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 {
     if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
         DisableThreadLibraryCalls(hModule);
-        if (check_version11()) {
-            init_patches();
-            install_latehook();
-        } else {
-            return FALSE;
-        }
+        check_version11();
+        init_patches();
+        install_latehook();
     }
 
     return TRUE;
