@@ -9,10 +9,11 @@ config::ConfigData& config::get_config()
     return conf;
 }
 
-bool IsWine()
+bool config::is_wine()
 {
-    HMODULE ntDllModule = LoadLibraryA("ntdll.dll");
-    return GetProcAddress(ntDllModule, "wine_get_version") != nullptr;
+    static HMODULE ntDllModule = LoadLibraryA("ntdll.dll");
+    static bool isWine = GetProcAddress(ntDllModule, "wine_get_version") != nullptr;
+    return isWine;
 }
 
 void config::init_defaults()
@@ -25,7 +26,7 @@ void config::init_defaults()
     conf.saveindirectory = false;
     conf.screenshotsfoldername = "FreelancerShots";
     conf.screenshotsindirectory = false;
-    conf.altfullscreenscreenshots = IsWine();
+    conf.altfullscreenscreenshots = is_wine();
     conf.altwindowedscreenshots = false;
     conf.removestartlocationwarning = true;
     conf.logtoconsole = false;

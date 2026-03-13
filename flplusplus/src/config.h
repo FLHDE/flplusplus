@@ -33,4 +33,5 @@ namespace config {
         std::vector<std::string> directips{};
     };
     ConfigData& get_config();
+    bool is_wine();
 }
