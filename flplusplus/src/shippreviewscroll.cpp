@@ -34,6 +34,8 @@ bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, i
 }
 
 // TODO: Hook the "on-frame" update function and implement smooth scrolling (see Turret Zoom plugin)
+// TODO: Allow the scrolling speed to be scaled based on the ship archetype (ini configurable)
+// [ShipPreviewWindow* +0x32C] contains the ship archetype ID
 void shippreviewscroll::init()
 {
     if (config::get_config().shippreviewscrollingspeed < MIN_SCROLLING_SPEED)
