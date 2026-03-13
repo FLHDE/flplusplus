@@ -12,6 +12,7 @@ add_library (flplusplus SHARED
     "src/screenshot.cpp"
     "src/savegame.cpp"
     "src/log.cpp"
+    "src/codec.cpp"
     "src/startlocation.cpp"
     "src/fontresource.cpp"
     "src/thnplayer.cpp"

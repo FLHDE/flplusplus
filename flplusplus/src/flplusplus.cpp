@@ -5,6 +5,7 @@
 #include "config.h"
 #include "screenshot.h"
 #include "savegame.h"
+#include "codec.h"
 #include "fontresource.h"
 #include "startlocation.h"
 #include "log.h"
@@ -90,6 +91,7 @@ void init_patches()
     graphics::init();
     screenshot::init();
     savegame::init();
+    codec::init();
     startlocation::init();
     fontresource::init(dataPath);
     thnplayer::init();
