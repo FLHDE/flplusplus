@@ -19,6 +19,7 @@
 #include "touchpad.h"
 #include "directips.h"
 #include "restart.h"
+#include "Common.h"
 
 // TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
 
@@ -66,6 +67,12 @@ void init_config()
         config::init_from_file(configPath);
     }
 
+    // The code below gets the fonts that need to be loaded
+    // However, the font loading isn't useful on the server
+    // because the plugin is loaded after the UI has already been initialized
+    if (IsMPServer())
+        return;
+
     // Get DATA folder path
     strcpy_s(dataPath, sizeof(dataPath), exePath);
     PathRemoveFileSpecA(dataPath);
@@ -84,24 +91,30 @@ void init_config()
 
 void init_patches()
 {
-    // TODO: Check which features can be used on the server
+    // Init stuff that works on both the client and server
     logger::patch_fdump();
     init_config();
     if(config::get_config().logtoconsole)
         RedirectIOToConsole();
     logger::writeline("flplusplus: installing patches");
-    graphics::init();
-    screenshot::init();
+
     savegame::init();
-    restart::init();
-    codec::init();
-    startlocation::init();
-    fontresource::init(dataPath);
-    thnplayer::init();
-    shippreviewscroll::init();
-    startup::init();
-    touchpad::init();
-    directips::init();
+
+    // Init all features that only work on the client
+    if (!IsMPServer())
+    {
+        restart::init();
+        graphics::init();
+        screenshot::init();
+        codec::init();
+        startlocation::init();
+        fontresource::init(dataPath);
+        thnplayer::init();
+        shippreviewscroll::init();
+        startup::init();
+        touchpad::init();
+        directips::init();
+    }
 
     logger::writeline("flplusplus: all patched");
 }

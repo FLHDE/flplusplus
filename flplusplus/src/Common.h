@@ -67,3 +67,5 @@ namespace Universe
     IBase* get_base(UINT id);
     ISystem* get_system(UINT id);
 }
+
+bool IsMPServer();
