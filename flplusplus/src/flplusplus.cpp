@@ -18,6 +18,7 @@
 #include "startup.h"
 #include "touchpad.h"
 #include "directips.h"
+#include "restart.h"
 
 // TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
 
@@ -83,6 +84,7 @@ void init_config()
 
 void init_patches()
 {
+    // TODO: Check which features can be used on the server
     logger::patch_fdump();
     init_config();
     if(config::get_config().logtoconsole)
@@ -91,6 +93,7 @@ void init_patches()
     graphics::init();
     screenshot::init();
     savegame::init();
+    restart::init();
     codec::init();
     startlocation::init();
     fontresource::init(dataPath);

@@ -11,6 +11,7 @@ add_library (flplusplus SHARED
     "src/config.cpp"
     "src/screenshot.cpp"
     "src/savegame.cpp"
+    "src/restart.cpp"
     "src/log.cpp"
     "src/codec.cpp"
     "src/startlocation.cpp"
