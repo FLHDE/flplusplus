@@ -91,8 +91,12 @@ void init_config()
 
 void init_patches()
 {
-    // Init stuff that works on both the client and server
+    // Patch the logging
     logger::patch_fdump();
+    if (IsMPServer())
+        logger::patch_serverlogf();
+
+    // Init stuff that works on both the client and server
     init_config();
     if(config::get_config().logtoconsole)
         RedirectIOToConsole();
