@@ -63,7 +63,10 @@ bool patch_pbubble()
     patch::patch_uint32(OF_PBUBBLE_GET_VALUE1, (UINT) &multiplyPbubblePtr);
 
     patch::set_execute_read_write(OF_REN_DIST1, sizeof(float));
-    float ren_dist1 = *((float*)OF_REN_DIST1) * cfg.pbubblescale;
+    float ren_dist1 = *((float*)OF_REN_DIST1);
+
+    if (cfg.pbubblescale > 2.0f)
+        ren_dist1 += (ren_dist1 / 10.0f) * (cfg.pbubblescale - 2.0f);
 
     // 40000.0f is considered to be the maximum "safe" value
     if (ren_dist1 > 40000.0f)
