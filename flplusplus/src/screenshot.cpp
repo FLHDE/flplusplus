@@ -72,7 +72,7 @@ bool ScreenShotPath(char * const outputBuffer)
             // Fallback
             GetScInDirectoryPath(path);
         } else {
-            strncpy(outputBuffer, path, MAX_PATH);
+            strcpy_s(outputBuffer, MAX_PATH, path);
             return true;
         }
     }
@@ -84,7 +84,7 @@ bool ScreenShotPath(char * const outputBuffer)
         }
     }
 
-    strncpy(outputBuffer, path, MAX_PATH);
+    strcpy_s(outputBuffer, MAX_PATH, path);
     return true;
 }
 

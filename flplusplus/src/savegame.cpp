@@ -88,7 +88,7 @@ bool UserDataPath(char * const outputBuffer)
             GetSavesInDirectoryPath(path);
         } else {
             WriteSaveDirSuccessMessage(path);
-            strncpy(outputBuffer, path, MAX_PATH);
+            strcpy_s(outputBuffer, MAX_PATH, path);
             return true;
         }
     }
@@ -101,7 +101,7 @@ bool UserDataPath(char * const outputBuffer)
     }
 
     WriteSaveDirSuccessMessage(path);
-    strncpy(outputBuffer, path, MAX_PATH);
+    strcpy_s(outputBuffer, MAX_PATH, path);
     return true;
 }
 
