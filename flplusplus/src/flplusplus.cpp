@@ -21,9 +21,9 @@
 #include "restart.h"
 #include "Common.h"
 
-// TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it
+// TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it (or does that make the names too long?)
 
-// TODO: Add options for abbreviating names in the contact lis
+// TODO: Add options for abbreviating names in the contact list
 // Check 00417A51 and https://stackoverflow.com/questions/66795957/c-gettextextentpoint32-doesnt-give-the-correct-size
 // fonts.ini: HudSmall <- Contact list font
 

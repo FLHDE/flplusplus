@@ -18,7 +18,7 @@ flplusplus also provides the following .ini extensions:
 
 In your `FONTS/fonts.ini` file you can create the following section.
 
-```
+```ini
 [FontFiles]
 path = FONTS/font.ttf
 path = FONTS/font2.ttf
@@ -29,7 +29,7 @@ This will load the files `FONTS/font.ttf` and `FONTS/font2.ttf` into the process
 ### Thn Player
 
 With flplusplus.dll in your dacom.ini, you can add `-thn` to your Freelancer.exe launch parameters to have it launch in THN player mode.
-This allows you to select an arbitrary .thn script (as long as it is self contained i.e. intros), and play it with Freelancer's thn engine.
+This allows you to select an arbitrary .thn script (as long as it is self-contained i.e. intros), and play it with Freelancer's thn engine.
 
 ![Screenshot from 2024-04-14 21-43-32](https://github.com/TheStarport/flplusplus/assets/10167247/11626748-4e9e-4cdb-bfa3-8bc37cfed1c0)
 
