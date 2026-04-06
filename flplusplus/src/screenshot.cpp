@@ -159,7 +159,8 @@ static DWORD OnScreenshot()
     }
 
     WCHAR directory[MAX_PATH];
-    mbstowcs(directory, directoryA, MAX_PATH);
+    size_t charsConverted;
+    mbstowcs_s(&charsConverted, directory, _countof(directory), directoryA, _countof(directory) - 1);
 
     // TODO: Is this check volatile?
     // What happens if the user turned fullscreen off via a third party app like Borderless Gaming.

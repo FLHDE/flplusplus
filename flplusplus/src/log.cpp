@@ -35,7 +35,7 @@ static DWORD fdump_timestamped(DWORD errorCode, const char *fmt, ...)
     char buffer[4096];
     va_list args;
     va_start(args, fmt);
-    vsnprintf(buffer, 4096, fmt, args);
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
     std::time_t rawtime;
 	std::tm* timeinfo;
@@ -98,7 +98,7 @@ void logger::writeformat(const char *fmt, ...)
     char buffer[4096];
     va_list args;
     va_start (args, fmt);
-    vsnprintf(buffer, 4096, fmt, args);
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end (args);
     logger::writeline(buffer);
 }
