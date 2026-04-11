@@ -6,8 +6,8 @@
 extern "C" {
 #endif
     
-typedef void (*flplusplus_cblatehook)(void*);    
-FLPEXPORT void flplusplus_add_latehook(flplusplus_cblatehook hkfunc, void *userData);
+//typedef void (*flplusplus_cblatehook)(void*);
+//FLPEXPORT void flplusplus_add_latehook(flplusplus_cblatehook hkfunc, void *userData);
 
 #ifdef __cplusplus
 }

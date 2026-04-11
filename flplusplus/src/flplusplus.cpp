@@ -33,20 +33,20 @@ static ScriptLoadPtr _ThornScriptLoad;
 
 char dataPath[MAX_PATH];
 
-struct LateHookEntry {
-    LateHookEntry(flplusplus_cblatehook func, void *data)
-        : func(func), data(data)
-    {}
-
-    flplusplus_cblatehook func;
-    void *data;
-};
-std::vector<LateHookEntry> lh;
-
-FLPEXPORT void flplusplus_add_latehook(flplusplus_cblatehook hkfunc, void *userData)
-{
-    lh.emplace_back(hkfunc, userData);
-}
+//struct LateHookEntry {
+//    LateHookEntry(flplusplus_cblatehook func, void *data)
+//        : func(func), data(data)
+//    {}
+//
+//    flplusplus_cblatehook func;
+//    void *data;
+//};
+//std::vector<LateHookEntry> lh;
+//
+//FLPEXPORT void flplusplus_add_latehook(flplusplus_cblatehook hkfunc, void *userData)
+//{
+//    lh.emplace_back(hkfunc, userData);
+//}
 
 void init_config()
 {
@@ -123,20 +123,20 @@ void init_patches()
     logger::writeline("flplusplus: all patched");
 }
 
-void late_init()
-{
-   for(const auto& entry: lh) {
-        entry.func(entry.data);
-   }
-}
-
-
-void * __cdecl script_load_hook(const char *script)
-{
-	late_init();
-	patch::undetour((unsigned char*)_ThornScriptLoad, thornLoadData);
-	return _ThornScriptLoad(script);
-}
+//void late_init()
+//{
+//   for(const auto& entry: lh) {
+//        entry.func(entry.data);
+//   }
+//}
+//
+//
+//void * __cdecl script_load_hook(const char *script)
+//{
+//	late_init();
+//	patch::undetour((unsigned char*)_ThornScriptLoad, thornLoadData);
+//	return _ThornScriptLoad(script);
+//}
 
 void install_latehook(void)
 {	
