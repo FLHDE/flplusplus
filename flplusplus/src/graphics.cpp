@@ -72,7 +72,7 @@ bool patch_pbubble()
     if (ren_dist1 > 40000.0f)
         ren_dist1 = 40000.0f;
 
-    patch::patch_float(OF_REN_DIST1, ren_dist1);
+    *((float*)OF_REN_DIST1) = ren_dist1;
 
     return true;
 }
