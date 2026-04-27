@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Install mingw64-i686 g++
       run: sudo apt install g++-mingw-w64-i686
     - name: Compile
@@ -16,7 +16,7 @@ jobs:
         cp flplusplus.ini out
         cp LICENSE.txt out/flplusplus_LICENSE.txt
     - name: Archive artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: flplusplus
         path: |
