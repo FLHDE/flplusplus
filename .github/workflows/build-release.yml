@@ -1,12 +1,14 @@
 name: Build Release
 
-on: [workflow_dispatch, push]
+on: [workflow_dispatch, push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
+      with:
+        ref: ${{ github.ref }}
     - name: Install mingw64-i686 g++
       run: sudo apt install g++-mingw-w64-i686
     - name: Compile
