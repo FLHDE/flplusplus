@@ -60,3 +60,12 @@
 #define CONNECT_TO_SERVER_THIS (0x67E7B8)
 
 #define OF_SERVER_LOG_FUNCTION_REF (0x40BDA2 + 1)
+
+#define OF_MOUSE_Y_UPDATE (0x41FE78)
+#define OF_MOUSE_X_UPDATE (0x41FE14)
+
+#define MOUSE_X (*(int*) 0x616840)
+#define MOUSE_Y (*(int*) 0x616844)
+
+#define WINDOW_WIDTH (*(int*) 0x679BC8)
+#define WINDOW_HEIGHT (*(int*) 0x679BCC)

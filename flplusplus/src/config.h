@@ -29,6 +29,7 @@ namespace config {
         bool alwaysregeneraterestartfile;
         int failedtoinitsavesdirids;
         bool touchpadsupport;
+        bool confinecursor;
         std::vector<std::string> fontfiles{};
         std::vector<std::string> directips{};
     };

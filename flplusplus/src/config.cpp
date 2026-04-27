@@ -37,6 +37,7 @@ void config::init_defaults()
     conf.alwaysregeneraterestartfile = true;
     conf.failedtoinitsavesdirids = 1849;
     conf.touchpadsupport = false;
+    conf.confinecursor = false;
 }
 void config::init_from_file(const char *filename)
 {
@@ -107,6 +108,9 @@ void config::init_from_file(const char *filename)
 
                 if (reader.is_value("touchpad_support"))
                     conf.touchpadsupport = reader.get_value_bool(0);
+
+                if (reader.is_value("confine_cursor"))
+                    conf.confinecursor = reader.get_value_bool(0);
             }
         }
         else if (reader.is_header("direct_ips"))

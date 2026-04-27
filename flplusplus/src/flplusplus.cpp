@@ -19,6 +19,7 @@
 #include "touchpad.h"
 #include "directips.h"
 #include "restart.h"
+#include "cursor.h"
 #include "Common.h"
 
 // TODO: FL.exe 004E8F7D - hook wcscat and add a space before and after it (or does that make the names too long?)
@@ -118,6 +119,7 @@ void init_patches()
         startup::init();
         touchpad::init();
         directips::init();
+        cursor::init();
     }
 
     logger::writeline("flplusplus: all patched");
