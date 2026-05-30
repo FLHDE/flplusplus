@@ -215,18 +215,21 @@ static DWORD OnScreenshot()
 	timeinfo = std::localtime(&rawtime);
 
 	std::wcsftime(buffer, 80, L"%Y-%m-%d_%H-%M-%S", timeinfo);
-
-    std::wstring systemName = GetSystemName();
-    std::wstring baseName = GetBaseName();
-    std::wstring shipName = GetShipName();
-
     std::wstring fileName = std::wstring(buffer);
-    if (!systemName.empty())
-        fileName += L'_' + systemName;
-    if (!baseName.empty())
-        fileName += L'_' + baseName;
-    if (!shipName.empty())
-        fileName += L'_' + shipName;
+
+    // If the player starts a game and then goes back to the main menu,
+    // the current system, base, and ship are not always reset.
+    // Hence, this code may obtain the incorrect names if the player is in the main menu.
+    // Therefore, only append the names if a game has started.
+    if (*(bool*) OF_GAME_STARTED)
+    {
+        std::wstring names[] = { GetSystemName(), GetBaseName(), GetShipName() };
+        for (const auto& name : names)
+        {
+            if (!name.empty())
+                fileName += L'_' + name;
+        }
+    }
 
     int i = 0;
     std::wstring outfile = GetScreenshotOutPath(directory, fileName, i);
@@ -259,14 +262,6 @@ static DWORD OnScreenshot()
 	return DWORD(-1);
 }
 
-PDWORD InitMainMenuHook()
-{
-    // Reset ship id, base id, and universe id when the main menu is displayed
-    // to prevent incorrect values from being added to the screenshot names.
-    ResetIds();
-    return (PDWORD) 0x67A598; // Original return value
-}
-
 void screenshot::init()
 {
     altFullscreenScreenshots = config::get_config().altfullscreenscreenshots;
@@ -277,5 +272,4 @@ void screenshot::init()
     unsigned char buffer[5];
     patch::detour((unsigned char*)OF_PRINTSCREEN, (void*)OnScreenshot, buffer);
     patch::detour(getScreenShotPath, (void*)ScreenShotPath, buffer);
-    patch::detour((unsigned char*)OF_INIT_MAIN_MENU, (void*)InitMainMenuHook, buffer, false);
 }

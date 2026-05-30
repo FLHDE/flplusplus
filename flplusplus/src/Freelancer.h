@@ -15,13 +15,10 @@ inline UINT GetFlString(UINT ids, PWCHAR buffer, UINT bufferSize)
     return ((GetFlStringFunc*) OF_GET_FL_STRING)(resourceHandle, ids, buffer, bufferSize);
 }
 
+// It is recommended to call this function rather than getting the CURRENT_SHIP_ID directly.
+// This is because Console hooks this function to make it so that the player has no ship sometimes.
 inline UINT GetShipId()
 {
     typedef UINT GetShipIdFunc();
     return ((GetShipIdFunc*) OF_GET_SHIP_ID)();
-}
-
-inline void ResetIds()
-{
-    *((PUINT) OF_CURRENT_SYSTEM_ID) = *((PUINT) OF_CURRENT_BASE_ID) = *((PUINT) OF_CURRENT_SHIP_ID) = 0;
 }
