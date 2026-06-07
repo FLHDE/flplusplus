@@ -38,6 +38,9 @@ bool __fastcall ShipPreviewWindowScroll(ShipPreviewWindow* window, PVOID _edx, i
 // [ShipPreviewWindow* +0x32C] contains the ship archetype ID
 // Alternatively, scale the speed based on the ship class. Array for 3 ships should be in [NN_ShipTrader* + 0x3EC]
 // Player ship class: [NN_ShipTrader* + 0x3E8]
+// Alternatively, scale by the ship's radius.
+// [dalib engine + 0x88] = DALib::Engine::GetRadius(long engineIndex, BYTE unk, float* radius, Vector* vec)
+// Engine index: [ShipPreviewWindow* +0x4B8]
 void shippreviewscroll::init()
 {
     if (config::get_config().shippreviewscrollingspeed < MIN_SCROLLING_SPEED)
