@@ -3,14 +3,19 @@
 flplusplus is a client-side hook for Freelancer providing the following features:
 
 - Timestamps for FLSpew.txt
-- Removed MP3 codec error spam
+- Redirecting the FLSpew.txt output to a console window 
+- Removed MP3 codec error spam on systems using Wine
+- Removed start location warning in FLSpew.txt
 - Configurable LOD/Render distance (flplusplus.ini)
 - Configurable save game location
+- Configurable screenshot location
 - PNG screenshots
-
-The following plugins by adoxa are also included:
-
-- Wheel Scroll
+- Zooming in and out in the Ship Dealer preview window using the scroll wheel
+- Automatically regenerated Restart.fl file on startup
+- Ability to change the IDS of the "failed to initialize saves directory" error message
+- Touchpad support
+- Cursor confinement in windowed mode
+- Directly connecting to Freelancer Servers (flplusplus.ini) 
 
 flplusplus also provides the following .ini extensions:
 
@@ -42,6 +47,6 @@ Build on Windows using Visual Studio with CMake
 ## Thanks
 
 Special thanks to:
-- Jason "Adoxa" Hood
+- Jason "adoxa" Hood
 - Cannon
 - Laz
