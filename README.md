@@ -16,6 +16,7 @@ flplusplus is a client-side hook for Freelancer providing the following features
 - Touchpad support
 - Cursor confinement in windowed mode
 - Directly connecting to Freelancer Servers (flplusplus.ini) 
+- Adjustable VSync and maximum FPS settings
 
 flplusplus also provides the following .ini extensions:
 

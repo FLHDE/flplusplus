@@ -38,6 +38,8 @@ void config::init_defaults()
     conf.failedtoinitsavesdirids = 1849;
     conf.touchpadsupport = false;
     conf.confinecursor = false;
+    conf.vsync = true;
+    conf.maxfps = 200.0f;
 }
 void config::init_from_file(const char *filename)
 {
@@ -111,6 +113,12 @@ void config::init_from_file(const char *filename)
 
                 if (reader.is_value("confine_cursor"))
                     conf.confinecursor = reader.get_value_bool(0);
+
+                if (reader.is_value("vsync"))
+                    conf.vsync = reader.get_value_bool(0);
+
+                if (reader.is_value("max_fps"))
+                    conf.maxfps = reader.get_value_float(0);
             }
         }
         else if (reader.is_header("direct_ips"))

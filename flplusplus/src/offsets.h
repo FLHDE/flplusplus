@@ -66,6 +66,12 @@
 #define OF_MOUSE_Y_UPDATE (0x41FE78)
 #define OF_MOUSE_X_UPDATE (0x41FE14)
 
+#define OF_VSYNC (0x5B16A3)
+
+#define OF_MAX_FPS1 (0x610A0C)
+#define F_OF_MAX_FPS2 (0x01A74C)
+#define F_OF_MAX_FPS3 (0x01A892)
+
 #define MOUSE_X (*(int*) 0x616840)
 #define MOUSE_Y (*(int*) 0x616844)
 

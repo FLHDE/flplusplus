@@ -25,6 +25,7 @@ add_library (flplusplus SHARED
     "src/touchpad.cpp"
     "src/directips.cpp"
     "src/cursor.cpp"
+    "src/video.cpp"
 )
 
 target_sources(flplusplus PRIVATE "rc/flplusplus.rc")

@@ -30,6 +30,8 @@ namespace config {
         int failedtoinitsavesdirids;
         bool touchpadsupport;
         bool confinecursor;
+        bool vsync;
+        float maxfps;
         std::vector<std::string> fontfiles{};
         std::vector<std::string> directips{};
     };
